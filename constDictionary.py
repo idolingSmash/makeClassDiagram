@@ -25,192 +25,173 @@ attriXmiModel = {u"xmi.id":u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff
 				u"isAbstract":u"false",
 				u"xmlns:UML":u"org.omg.xmi.namespace.UML"}
 
-diagramCustomStyleMap=[
-private.attribute.visibility,true
-attribute.stereotype.visibility,true
-package.operation.visibility,true
-protected.operation.visibility,true
-operation.parameter.directionkind.visibility,false
-attribute.type.visibility,true
-attribute.initial.value.visibility,true
-operation.compartment.visibility,true
-operation.return.type.visibility,true
-attribute.compartment.visibility,true
-operation.parameter.type.visibility,true
-private.operation.visibility,true
-public.operation.visibility,true
-operation.stereotype.visibility,true
-package.attribute.visibility,true
-operation.constraint.visibility,true
-visibility.kind.visibility,true
-protected.attribute.visibility,true
-public.attribute.visibility,true
-operation.parameter.visibility,true
-association.name.direction.visibility,true
-attribute.constraint.visibility,true
-]
+diagramCustomStyleMap={
+			u"private.attribute.visibility":u"true",
+			u"attribute.stereotype.visibility":u"true",
+			u"package.operation.visibility":u"true",
+			u"protected.operation.visibility":u"true",
+			u"operation.parameter.directionkind.visibility":u"false",
+			u"attribute.type.visibility":u"true",
+			u"attribute.initial.value.visibility":u"true",
+			u"operation.compartment.visibility":u"true",
+			u"operation.return.type.visibility":u"true",
+			u"attribute.compartment.visibility":u"true",
+			u"operation.parameter.type.visibility":u"true",
+			u"private.operation.visibility":u"true",
+			u"public.operation.visibility":u"true",
+			u"operation.stereotype.visibility":u"true",
+			u"package.attribute.visibility":u"true",
+			u"operation.constraint.visibility":u"true",
+			u"visibility.kind.visibility":u"true",
+			u"protected.attribute.visibility":u"true",
+			u"public.attribute.visibility":u"true",
+			u"operation.parameter.visibility":u"true",
+			u"association.name.direction.visibility":u"true",
+			u"attribute.constraint.visibility":u"true"
+		}
 
-dialogAssociationPresentation=[
-version,0
-depth,0
-notationType,0
-stereotypeVisibility,true
-constraintVisibility,true
-rightAngle,false
-visibility,true
-qualifierBoxATypeVisibility,true
-qualifierBoxBTypeVisibility,true
-nameDirectionVisible,true
-nameDirectionReverse,0
-]
+dialogAssociationPresentation={
+			u"version":u"0",
+			u"depth":u"0",
+			u"notationType":u"0",
+			u"stereotypeVisibility":u"true",
+			u"constraintVisibility":u"true",
+			u"rightAngle":u"false",
+			u"visibility":u"true",
+			u"qualifierBoxATypeVisibility":u"true",
+			u"qualifierBoxBTypeVisibility":u"true",
+			u"nameDirectionVisible":u"true",
+			u"nameDirectionReverse":u"0"
+		}
 
-dialogClassifierPresentation=[
-version,0
-depth,2147483636
-notationType,0
-pathVisibility,0
-classType,0
-interfaceType,0
-doAutoResize,true
-visibility,true
-isActive,false
-stereotypeVisibility,true
-constraintVisibility,true
-allAttributeVisibility,true
-allOperationVisibility,true
-visibilityKindVisibility,true
-attributeTypeVisibility,true
-parameterVisibility,true
-parameterTypeVisibility,true
-returnTypeVisibility,true
-isClassNameItalic,false
-attributeInitValueVisibility,true
-attributeStereotypeVisibility,true
-operationStereotypeVisibility,true
-attributeConstraintVisibility,true
-operationConstraintVisibility,true
-publicAttributeVisibility,true
-protectedAttributeVisibility,true
-packageAttributeVisibility,true
-privateAttributeVisibility,true
-publicOperationVisibility,true
-protectedOperationVisibility,true
-packageOperationVisibility,true
-privateOperationVisibility,true
-nameVisibility,true
-templateParameterVisibility,true
-templateParameterMultiline,false
-boundClassTemplateParameterNameVisibility,false
-boundClassTemplateParameterVisibility,true
-]
+dialogClassifierPresentation={
+			u"version":u"0",
+			u"depth":u"2147483636",
+			u"notationType":u"0",
+			u"pathVisibility":u"0",
+			u"classType":u"0",
+			u"interfaceType":u"0",
+			u"doAutoResize":u"true",
+			u"visibility":u"true",
+			u"isActive":u"false",
+			u"stereotypeVisibility":u"true",
+			u"constraintVisibility":u"true",
+			u"allAttributeVisibility":u"true",
+			u"allOperationVisibility":u"true",
+			u"visibilityKindVisibility":u"true",
+			u"attributeTypeVisibility":u"true",
+			u"parameterVisibility":u"true",
+			u"parameterTypeVisibility":u"true",
+			u"returnTypeVisibility":u"true",
+			u"isClassNameItalic":u"false",
+			u"attributeInitValueVisibility":u"true",
+			u"attributeStereotypeVisibility":u"true",
+			u"operationStereotypeVisibility":u"true",
+			u"attributeConstraintVisibility":u"true",
+			u"operationConstraintVisibility":u"true",
+			u"publicAttributeVisibility":u"true",
+			u"protectedAttributeVisibility":u"true",
+			u"packageAttributeVisibility":u"true",
+			u"privateAttributeVisibility":u"true",
+			u"publicOperationVisibility":u"true",
+			u"protectedOperationVisibility":u"true",
+			u"packageOperationVisibility":u"true",
+			u"privateOperationVisibility":u"true",
+			u"nameVisibility":u"true",
+			u"templateParameterVisibility":u"true",
+			u"templateParameterMultiline":u"false",
+			u"boundClassTemplateParameterNameVisibility":u"false",
+			u"boundClassTemplateParameterVisibility":u"true"
+		}
 
-modelCustomStyleMap=[shadow.on.elements,true
-uml.color.component_instance,#FFFFCC
-view.gradation_background.selected,0
-diagram.editor.text.anti-aliasing,true
-uml.color.com_lifeline,#FFFFCC
-uml.color.activity_parameter_node,#FFFFCC
-view.gradation.null,0
-uml.color.exitpoint,#FFFFCC
-uml.color.seq_lifeline,#FFFFCC
-uml.color.model,#FFFFCC
-uml.color.node_instance,#FFFFCC
-uml.color.subsystem,#FFFFCC
-uml.stereotype.name.0,actor
-uml.color.flow_final_node,#FFFFCC
-uml.color.part,#FFFFCC
-uml.color.artifact,#FFFFCC
-view.gradation.horizontal,2
-view.gradation_element.selected,1
-dfd.color.datastore,#FFFFCC
-uml.color.role,#FFFFCC
-uml.stereotype.color.7,#FFFFCC
-uml.color.deep_history,#FFFFCC
-uml.stereotype.color.8,#FFFFCC
-uml.stereotype.color.5,#FFFFCC
-uml.color.action_state,#FFFFCC
-uml.stereotype.color.6,#FFFFCC
-uml.stereotype.color.3,#FFFFCC
-uml.stereotype.name.3,control
-uml.stereotype.color.4,#FFFFCC
-uml.stereotype.name.4,entity
-uml.stereotype.color.1,#FFFFCC
-uml.stereotype.name.1,interface
-uml.stereotype.color.2,#FFFFCC
-uml.stereotype.name.2,boundary
-uml.color.submachine_state,#FFFFCC
-uml.stereotype.name.7,
-uml.color.lane,#FFFFCC
-uml.stereotype.name.8,
-uml.stereotype.color.0,#FFFFCC
-uml.stereotype.name.5,
-uml.stereotype.name.6,
-uml.color.shallow_history,#FFFFCC
-er.entity.type.name.8,
-er.entity.type.name.7,
-uml.color.interaction_use,#FFFFCC
-er.entity.type.name.6,
-er.entity.type.name.5,
-uml.color.object_flow_state,#FFFFCC
-er.entity.type.name.4,
-er.entity.type.color.7,#FFFFFF
-er.entity.type.name.3,
-er.entity.type.color.8,#FFFFFF
-er.entity.type.name.2,Summary
-er.entity.type.color.5,#FFFFFF
-uml.color.sub_activity,#FFFFCC
-er.entity.type.name.1,Event
-er.entity.type.color.6,#FFFFFF
-uml.color.state_invariant,#FFFFCC
-uml.color.connector,#FFFFCC
-er.entity.type.name.0,Resource
-view.gradation.diagonal,1
-diagram.editor.other.anti-aliasing,true
-uml.color.condition_judgement,#FFFFCC
-sysml.color.requirement,#FFFFCC
-uml.color.class,#FFFFCC
-view.gradation.vertical,3
-uml.color.composite_state,#FFFFCC
-uml.color.entrypoint,#FFFFCC
-sysml.color.testcase,#FFFFCC
-uml.color.choice,#FFFFCC
-uml.color.package,#FFFFCC
-uml.color.merge,#FFFFCC
-uml.color.usecase,#FFFFCC
-uml.color.partition,#FFFFCC
-uml.color.port,#FFFFCC
-uml.color.flow_element,#FFFFCC
-uml.color.note,#FFCCCC
-uml.color.node,#FFFFCC
-dfd.color.external_entity,#FFFFCC
-uml.color.component,#FFFFCC
-other.color.common,#FFFFCC
-er.entity.type.color.2,#66CCFF
-dfd.color.processbox,#FFFFCC
-er.entity.type.color.1,#FFFF99
-er.entity.type.color.4,#FFFFFF
-er.entity.type.color.3,#FFFFFF
-er.color.entity,#FFFFCC
-er.entity.type.color.0,#FF9999
-diagram.editor.rect.anti-aliasing,false
-]
-
-taggedValueModelElement=[
-1h,0,jude.profiles,%3C%3Fxml+version+%3D+%221.0%22+encoding+%3D+%22UTF-8%22+standalone+%3D+%22yes%22%3F%3E%0D%0A%3CumlProfiles%3E%0D%0A+%3CumlProfile%3E%0D%0A++%3Cname%3Ejude.profiles%3C%2Fname%3E%0D%0A+%3C%2FumlProfile%3E%0D%0A%3C%2FumlProfiles%3E%0D%0A%0D%0A,3e
-be,0,jude.usericons,%3C%3Fxml+version+%3D+%221.0%22+encoding+%3D+%22UTF-8%22+standalone+%3D+%22yes%22%3F%3E%0D%0A%3CmmUserIcon%3E%0D%0A+%3CmmUserIconInfo%3E%0D%0A++%3Cname%3Ejude.usericons%3C%2Fname%3E%0D%0A+%3C%2FmmUserIconInfo%3E%0D%0A%3C%2FmmUserIcon%3E%0D%0A%0D%0A,3e
-61,0,jude.profile.java,true,3e
-69,0,jude.profile.java.stereotypes,class%2Cattribute%2Coperation%2Cenum%2Cenum_constant,3e
-2r,0,jude.profile.java.stereotype.class,name%3DJava+Class%0D%0Atarget%3DClass%2CAssociationClass%2CInterface%2CEntity%2CBoundary%2CControl%2CActor%0D%0Avisibility%3Dfalse%0D%0Arequired%3Dtrue%0D%0Atags%3Dannotations%2Catmark_interface%2Cstrictfp%0D%0Alabel%3D,3e
-l,0,jude.profile.java.stereotype.attribute,name%3DJava+Attribute%0D%0Atarget%3DAttribute%0D%0Avisibility%3Dfalse%0D%0Arequired%3Dtrue%0D%0Atags%3Dannotations%2Ctransient%2Cvolatile%0D%0Alabel%3D,3e
-0,0,jude.profile.java.stereotype.operation,name%3DJava+Method%0D%0Atarget%3DMethod%0D%0Avisibility%3Dfalse%0D%0Arequired%3Dtrue%0D%0Atags%3Dannotations%2Csynchronized%2Cnative%2Cstrictfp%0D%0Alabel%3D,3e
-30,0,jude.profile.java.stereotype.enum,name%3Denum%0D%0Atarget%3DClass%2CAssociationClass%2CInterface%2CEntity%2CBoundary%2CControl%2CActor%0D%0Avisibility%3Dtrue%0D%0Arequired%3Dfalse%0D%0Atags%3D%0D%0Alabel%3D%3C%3Cenum%3E%3E,3e
-aw,0,jude.profile.java.stereotype.enum_constant,name%3Denum+constant%0D%0Atarget%3DAttribute%0D%0Avisibility%3Dtrue%0D%0Arequired%3Dfalse%0D%0Atags%3D%0D%0Alabel%3D%3C%3Cenum+constant%3E%3E,3e
-60,0,jude.profile.java.tags,annotations%2Catmark_interface%2Csynchronized%2Cnative%2Ctransient%2Cvolatile%2Cstrictfp,3e
-6f,0,jude.profile.java.tag.annotations,name%3Djude.java.annotations%0D%0Atarget%3DClass%2CAssociationClass%2CInterface%2CEntity%2CBoundary%2CControl%2CActor%2CAttribute%2CMethod%0D%0Astereotype%3DJava+Class%2CJava+Attribute%2CJava+Method%0D%0Adefaultvalue%3D%0D%0Adefinition%3D%0D%0Atype%3Dtext%0D%0Alabel%3Dannotations%0D%0Aomit%3Dtrue,3e
-4e,0,jude.profile.java.tag.atmark_interface,name%3Djude.java.atmark_interface%0D%0Atarget%3DClass%2CAssociationClass%2CInterface%2CEntity%2CBoundary%2CControl%2CActor%0D%0Astereotype%3DJava+Class%0D%0Adefaultvalue%3Dfalse%0D%0Adefinition%3D%0D%0Atype%3Dboolean%0D%0Alabel%3D%40interface%0D%0Aomit%3Dtrue,3e
-t,0,jude.profile.java.tag.synchronized,name%3Djude.java.synchronized%0D%0Atarget%3DMethod%0D%0Astereotype%3DJava+Method%0D%0Adefaultvalue%3Dfalse%0D%0Adefinition%3D%0D%0Atype%3Dboolean%0D%0Alabel%3Dsynchronized%0D%0Aomit%3Dtrue,3e
-al,0,jude.profile.java.tag.native,name%3Djude.java.native%0D%0Atarget%3DMethod%0D%0Astereotype%3DJava+Method%0D%0Adefaultvalue%3Dfalse%0D%0Adefinition%3D%0D%0Atype%3Dboolean%0D%0Alabel%3Dnative%0D%0Aomit%3Dtrue,3e
-b8,0,jude.profile.java.tag.transient,name%3Djude.java.transient%0D%0Atarget%3DAttribute%0D%0Astereotype%3DJava+Attribute%0D%0Adefaultvalue%3Dfalse%0D%0Adefinition%3D%0D%0Atype%3Dboolean%0D%0Alabel%3Dtransient%0D%0Aomit%3Dtrue,3e
-9j,0,jude.profile.java.tag.volatile,name%3Djude.java.volatile%0D%0Atarget%3DAttribute%0D%0Astereotype%3DJava+Attribute%0D%0Adefaultvalue%3Dfalse%0D%0Adefinition%3D%0D%0Atype%3Dboolean%0D%0Alabel%3Dvolatile%0D%0Aomit%3Dtrue,3e
-1d,0,jude.profile.java.tag.strictfp,name%3Djude.java.strictfp%0D%0Atarget%3DClass%2CAssociationClass%2CInterface%2CEntity%2CBoundary%2CControl%2CActor%2CMethod%0D%0Astereotype%3DJava+Class%2CJava+Method%0D%0Adefaultvalue%3Dfalse%0D%0Adefinition%3D%0D%0Atype%3Dboolean%0D%0Alabel%3Dstrictfp%0D%0Aomit%3Dtrue,3e
-]
+modelCustomStyleMap={
+				u"shadow.on.elements":u"true",
+				u"uml.color.component_instance":u"#FFFFCC",
+				u"view.gradation_background.selected":u"0",
+				u"diagram.editor.text.anti-aliasing":u"true",
+				u"uml.color.com_lifeline":u"#FFFFCC",
+				u"uml.color.activity_parameter_node":u"#FFFFCC",
+				u"view.gradation.null":u"0",
+				u"uml.color.exitpoint":u"#FFFFCC",
+				u"uml.color.seq_lifeline":u"#FFFFCC",
+				u"uml.color.model":u"#FFFFCC",
+				u"uml.color.node_instance":u"#FFFFCC",
+				u"uml.color.subsystem":u"#FFFFCC",
+				u"uml.stereotype.name.0":u"actor",
+				u"uml.color.flow_final_node":u"#FFFFCC",
+				u"uml.color.part":u"#FFFFCC",
+				u"uml.color.artifact":u"#FFFFCC",
+				u"view.gradation.horizontal":u"2",
+				u"view.gradation_element.selected":u"1",
+				u"dfd.color.datastore":u"#FFFFCC",
+				u"uml.color.role":u"#FFFFCC",
+				u"uml.stereotype.color.7":u"#FFFFCC",
+				u"uml.color.deep_history":u"#FFFFCC",
+				u"uml.stereotype.color.8":u"#FFFFCC",
+				u"uml.stereotype.color.5":u"#FFFFCC",
+				u"uml.color.action_state":u"#FFFFCC",
+				u"uml.stereotype.color.6":u"#FFFFCC",
+				u"uml.stereotype.color.3":u"#FFFFCC",
+				u"uml.stereotype.name.3":u"control",
+				u"uml.stereotype.color.4":u"#FFFFCC",
+				u"uml.stereotype.name.4":u"entity",
+				u"uml.stereotype.color.1":u"#FFFFCC",
+				u"uml.stereotype.name.1":u"interface",
+				u"uml.stereotype.color.2":u"#FFFFCC",
+				u"uml.stereotype.name.2":u"boundary",
+				u"uml.color.submachine_state":u"#FFFFCC",
+				u"uml.stereotype.name.7":u"",
+				u"uml.color.lane":u"#FFFFCC",
+				u"uml.stereotype.name.8":u"",
+				u"uml.stereotype.color.0":u"#FFFFCC",
+				u"uml.stereotype.name.5":u"",
+				u"uml.stereotype.name.6":u"",
+				u"uml.color.shallow_history":u"#FFFFCC",
+				u"er.entity.type.name.8":u"",
+				u"er.entity.type.name.7":u"",
+				u"uml.color.interaction_use":u"#FFFFCC",
+				u"er.entity.type.name.6":u"",
+				u"er.entity.type.name.5":u"",
+				u"uml.color.object_flow_state":u"#FFFFCC",
+				u"er.entity.type.name.4":u"",
+				u"er.entity.type.color.7":u"#FFFFFF",
+				u"er.entity.type.name.3":u"",
+				u"er.entity.type.color.8":u"#FFFFFF",
+				u"er.entity.type.name.2":u"Summary",
+				u"er.entity.type.color.5":u"#FFFFFF",
+				u"uml.color.sub_activity":u"#FFFFCC",
+				u"er.entity.type.name.1":u"Event",
+				u"er.entity.type.color.6":u"#FFFFFF",
+				u"uml.color.state_invariant":u"#FFFFCC",
+				u"uml.color.connector":u"#FFFFCC",
+				u"er.entity.type.name.0":u"Resource",
+				u"view.gradation.diagonal":u"1",
+				u"diagram.editor.other.anti-aliasing":u"true",
+				u"uml.color.condition_judgement":u"#FFFFCC",
+				u"sysml.color.requirement":u"#FFFFCC",
+				u"uml.color.class":u"#FFFFCC",
+				u"view.gradation.vertical":u"3",
+				u"uml.color.composite_state":u"#FFFFCC",
+				u"uml.color.entrypoint":u"#FFFFCC",
+				u"sysml.color.testcase":u"#FFFFCC",
+				u"uml.color.choice":u"#FFFFCC",
+				u"uml.color.package":u"#FFFFCC",
+				u"uml.color.merge":u"#FFFFCC",
+				u"uml.color.usecase":u"#FFFFCC",
+				u"uml.color.partition":u"#FFFFCC",
+				u"uml.color.port":u"#FFFFCC",
+				u"uml.color.flow_element":u"#FFFFCC",
+				u"uml.color.note":u"#FFCCCC",
+				u"uml.color.node":u"#FFFFCC",
+				u"dfd.color.external_entity":u"#FFFFCC",
+				u"uml.color.component":u"#FFFFCC",
+				u"other.color.common":u"#FFFFCC",
+				u"er.entity.type.color.2":u"#66CCFF",
+				u"dfd.color.processbox":u"#FFFFCC",
+				u"er.entity.type.color.1":u"#FFFF99",
+				u"er.entity.type.color.4":u"#FFFFFF",
+				u"er.entity.type.color.3":u"#FFFFFF",
+				u"er.color.entity":u"#FFFFCC",
+				u"er.entity.type.color.0":u"#FF9999",
+				u"diagram.editor.rect.anti-aliasing":u"false"
+			}
