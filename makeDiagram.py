@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import constDictionary as dic
-import constList as lis
-import commonFunction as comm
-import elementTreeFunction as etFunc
+import packageLib.constDictionary as dic
+import packageLib.constList as lis
+import packageLib.commonFunction as comm
+import packageLib.elementTreeFunction as etFunc
 
 import os.path
 import re
