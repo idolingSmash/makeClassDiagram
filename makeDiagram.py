@@ -5,6 +5,7 @@ import packageLib.constDictionary as dic
 import packageLib.constList as lis
 import packageLib.commonFunction as comm
 import packageLib.elementTreeFunction as etFunc
+import packageLib.cabochaFunction as pump
 
 import os.path
 import re
@@ -13,6 +14,7 @@ import codecs
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 from xml.etree import ElementTree
 from xml.dom import minidom
+from lxml import etree
 
 """
 	header部を作成
@@ -22,21 +24,18 @@ def makeHeader(ptree):
 	docTree = SubElement(parentsTree, u"XMI.documentation")
 	metaTree = SubElement(parentsTree, u"XMI.metamodel")
 	attriMetaDic = {u"xmi.name":u"UML", u"xmi.version":u"1.4"}
-	for key, val in dic.tagXmiHeader.iteritems():
-		valTree = SubElement(docTree, key)
-		if isinstance(val, unicode):
-			valTree.text = val
-		elif isinstance(val, list):
-			childTree = SubElement(valTree, val[0])
-			for ckey, cval in val[1].iteritems():
-				childTree.set(ckey, cval)
 	etFunc.setAttributeInTag(metaTree, attriMetaDic)
+	for lineItem in lis.tagXmiHeader:
+		valTree = SubElement(docTree, lineItem[0])
+		valTree.text = lineItem[1]
+	verTree = SubElement(SubElement(docTree, u"XMI.sortedVersionHistories"), u"XMI.versionEntry")
+	verTree.set(u"productVersion", u"professional 6.7.0")
+	verTree.set(u"modelVersion",u"36")
 	return parentsTree
 
 """
 	body部-taggedValueを作成
 """
-
 def makeTaggedValue(cdTree, splitList):
 	listAttriKey = [u"xmi.id", u"version", u"tag", u"value"]
 	for spItem in splitList:
@@ -53,10 +52,12 @@ def makeTaggedValue(cdTree, splitList):
 
 """
 	body部を作成
+		UML:Model
+		UML:ModelElement.taggedValue
 """
 def makeBodyProperty(cdTree):
 	umlModel = SubElement(cdTree, u'UML:Model')
-	taggedValue = SubElement(cdTree, u"UML:ModelElement.taggedValue")
+	taggedValue = SubElement(umlModel, u"UML:ModelElement.taggedValue")
 	etFunc.setAttributeInTag(umlModel, dic.attriXmiModel)
 	extensionProperty = SubElement(umlModel, u'XMI.extension')
 	customStyleMap = SubElement(extensionProperty, u'UML:Model.customStyleMap')
@@ -65,6 +66,13 @@ def makeBodyProperty(cdTree):
 		childTree.set(u"key",key)
 		childTree.set(u"value",val)
 	makeTaggedValue(taggedValue, lis.taggedValueModelElement)
+	SubElement(umlModel, u"UML:Namespace.ownedElement")	
+
+"""
+	body部-Diagramを作成
+"""
+def makeDiagram(cdTree):
+	ptree = SubElement(cdTree, u'XMI.extension')
 
 """
 	body部を作成
@@ -72,7 +80,7 @@ def makeBodyProperty(cdTree):
 def makeBody(cdTree):
 	Body = SubElement(cdTree, u'XMI.content')
 	makeBodyProperty(Body)
-
+	makeDiagram(Body)
 
 
 """
@@ -84,7 +92,29 @@ def makeClassDiagram(cdTree):
 	makeBody(cdTree)	
 	return cdTree
 
+"""
+	xmlを出力
+"""
+def outputXML(cdTree):
+	tree = etree.fromstring(cdTree)
+	with open("test.xml", "w") as f:
+		f.write(etree.tostring(tree, pretty_print = True, xml_declaration = True, encoding='UTF-8', standalone="yes"))
+
 if __name__ == "__main__":
 #	print comm.convertURLEncode(u"千葉真一")
-	parents = Element(u'XML')
-	comm.setWriteLineList("test.xml", etFunc.prettify(makeClassDiagram(parents)))
+	
+#	paramPath = comm.getTextPathInCommandLine()
+#	textList = [item.strip() for item in comm.getReadLineList(paramPath)]
+#	title = textList[0]
+#	sentenceList = textList[2:10]
+
+	#cabocha処理	
+#	pumpkinCake = pump.makePumpkinCake(sentenceList)
+#	for i,soup in enumerate(pumpkinCake):
+#		print str(i) + u"行目"
+#		print soup
+
+	parents = Element(u'XMI')
+	outputXML(etFunc.prettify(makeClassDiagram(parents)))
+
+	
