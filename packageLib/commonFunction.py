@@ -46,9 +46,19 @@ def getReadLineList(path):
 """
 def setWriteLineList(name,outstr):
 	outFileName, ext = os.path.splitext(name)
-	fout = codecs.open(outFileName + ext, 'w', 'utf-8')
+	fout = codecs.open(outFileName + ext, 'w', 'utf-8' )
 	fout.write(outstr) # 引数の文字列をファイルに書き込む
 	fout.close() # ファイルを閉じる
+
+"""
+	テキストファイルに書き込む(XML用)
+"""
+#def setWriteXMLLineList(name, eTree):
+#	outFileName, ext = os.path.splitext(name)
+#	fout = open(outFileName + ext, 'w')
+#	eTree.write(fout, encoding='utf-8',xml_declaration=True) # 引数の文字列をファイルに書き込む
+#	fout.close() # ファイルを閉じる
+
 
 """
 	全角判定

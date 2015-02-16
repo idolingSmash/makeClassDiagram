@@ -6,16 +6,6 @@ attriXmiVersion = {u"xmi.version":u"1.1",
 					u"xmlns:JUDE":u"http://objectclub.esm.co.jp/Jude/namespace/",
 					u"xmlns:UML":u"org.omg.xmi.namespace.UML"}
 
-tagXmiHeader = {u"XMI.exporter":u"Jomt XMI writer",
-				u"XMI.exporterVersion":u"1.2.0.36",
-				u"XMI.currentModelVersion":u"36",
-				u"XMI.maxModelVersion":u"36",
-				u"XMI.currentModelProducer":u"A.P",
-				u"XMI.sortedVersionHistories": 
-				[u"XMI.versionEntry",
-				{u"productVersion":u"professional 6.7.0", u"modelVersion":u"36"}]
-				}
-
 attriXmiModel = {u"xmi.id":u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37",
 				u"name":u"%E5%8D%83%E8%91%89%E7%9C%9F%E4%B8%80",
 				u"version":u"0",
@@ -24,31 +14,6 @@ attriXmiModel = {u"xmi.id":u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff
 				u"isLeaf":u"false",
 				u"isAbstract":u"false",
 				u"xmlns:UML":u"org.omg.xmi.namespace.UML"}
-
-diagramCustomStyleMap={
-			u"private.attribute.visibility":u"true",
-			u"attribute.stereotype.visibility":u"true",
-			u"package.operation.visibility":u"true",
-			u"protected.operation.visibility":u"true",
-			u"operation.parameter.directionkind.visibility":u"false",
-			u"attribute.type.visibility":u"true",
-			u"attribute.initial.value.visibility":u"true",
-			u"operation.compartment.visibility":u"true",
-			u"operation.return.type.visibility":u"true",
-			u"attribute.compartment.visibility":u"true",
-			u"operation.parameter.type.visibility":u"true",
-			u"private.operation.visibility":u"true",
-			u"public.operation.visibility":u"true",
-			u"operation.stereotype.visibility":u"true",
-			u"package.attribute.visibility":u"true",
-			u"operation.constraint.visibility":u"true",
-			u"visibility.kind.visibility":u"true",
-			u"protected.attribute.visibility":u"true",
-			u"public.attribute.visibility":u"true",
-			u"operation.parameter.visibility":u"true",
-			u"association.name.direction.visibility":u"true",
-			u"attribute.constraint.visibility":u"true"
-		}
 
 dialogAssociationPresentation={
 			u"version":u"0",
@@ -195,3 +160,28 @@ modelCustomStyleMap={
 				u"er.entity.type.color.0":u"#FF9999",
 				u"diagram.editor.rect.anti-aliasing":u"false"
 			}
+
+diagramCustomStyleMap={
+			u"private.attribute.visibility":u"true",
+			u"attribute.stereotype.visibility":u"true",
+			u"package.operation.visibility":u"true",
+			u"protected.operation.visibility":u"true",
+			u"operation.parameter.directionkind.visibility":u"false",
+			u"attribute.type.visibility":u"true",
+			u"attribute.initial.value.visibility":u"true",
+			u"operation.compartment.visibility":u"true",
+			u"operation.return.type.visibility":u"true",
+			u"attribute.compartment.visibility":u"true",
+			u"operation.parameter.type.visibility":u"true",
+			u"private.operation.visibility":u"true",
+			u"public.operation.visibility":u"true",
+			u"operation.stereotype.visibility":u"true",
+			u"package.attribute.visibility":u"true",
+			u"operation.constraint.visibility":u"true",
+			u"visibility.kind.visibility":u"true",
+			u"protected.attribute.visibility":u"true",
+			u"public.attribute.visibility":u"true",
+			u"operation.parameter.visibility":u"true",
+			u"association.name.direction.visibility":u"true",
+			u"attribute.constraint.visibility":u"true"
+		}

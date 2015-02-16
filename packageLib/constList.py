@@ -1,6 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+tagXmiHeader = [[u"XMI.exporter",u"Jomt XMI writer"],
+				[u"XMI.exporterVersion",u"1.2.0.36"],
+				[u"XMI.currentModelVersion",u"36"],
+				[u"XMI.maxModelVersion",u"36"],
+				[u"XMI.currentModelProducer",u"A.P"]
+				]
+
 taggedValueModelElement=[
 	"1h,0,jude.profiles,%3C%3Fxml+version+%3D+%221.0%22+encoding+%3D+%22UTF-8%22+standalone+%3D+%22yes%22%3F%3E%0D%0A%3CumlProfiles%3E%0D%0A+%3CumlProfile%3E%0D%0A++%3Cname%3Ejude.profiles%3C%2Fname%3E%0D%0A+%3C%2FumlProfile%3E%0D%0A%3C%2FumlProfiles%3E%0D%0A%0D%0A",
 	"be,0,jude.usericons,%3C%3Fxml+version+%3D+%221.0%22+encoding+%3D+%22UTF-8%22+standalone+%3D+%22yes%22%3F%3E%0D%0A%3CmmUserIcon%3E%0D%0A+%3CmmUserIconInfo%3E%0D%0A++%3Cname%3Ejude.usericons%3C%2Fname%3E%0D%0A+%3C%2FmmUserIconInfo%3E%0D%0A%3C%2FmmUserIcon%3E%0D%0A%0D%0A",
