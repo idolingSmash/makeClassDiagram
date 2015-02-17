@@ -3,6 +3,7 @@
 
 import packageLib.constDictionary as dic
 import packageLib.constList as lis
+import packageLib.constClass as cls
 import packageLib.commonFunction as comm
 import packageLib.elementTreeFunction as etFunc
 import packageLib.cabochaFunction as pump
@@ -14,7 +15,8 @@ import codecs
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 from xml.etree import ElementTree
 from xml.dom import minidom
-from lxml import etree
+from lxml import etree as lxml
+from bs4 import BeautifulSoup
 
 """
 	header部を作成
@@ -96,25 +98,43 @@ def makeClassDiagram(cdTree):
 	xmlを出力
 """
 def outputXML(cdTree):
-	tree = etree.fromstring(cdTree)
+	tree = lxml.fromstring(cdTree)
 	with open("test.xml", "w") as f:
-		f.write(etree.tostring(tree, pretty_print = True, xml_declaration = True, encoding='UTF-8', standalone="yes"))
+		f.write(lxml.tostring(tree, pretty_print = True, xml_declaration = True, encoding='UTF-8', standalone="yes"))
 
 if __name__ == "__main__":
 #	print comm.convertURLEncode(u"千葉真一")
 	
-#	paramPath = comm.getTextPathInCommandLine()
-#	textList = [item.strip() for item in comm.getReadLineList(paramPath)]
-#	title = textList[0]
-#	sentenceList = textList[2:10]
+	paramPath = comm.getTextPathInCommandLine()
+	textList = [item.strip() for item in comm.getReadLineList(paramPath)]
+	title = textList[0]
+	sentenceList = textList[2:]
 
-	#cabocha処理	
-#	pumpkinCake = pump.makePumpkinCake(sentenceList)
-#	for i,soup in enumerate(pumpkinCake):
-#		print str(i) + u"行目"
-#		print soup
+	pumpkinCake = pump.makePumpkinCake(sentenceList) #cabocha処理(XML形式で出力)
+	actorList = pump.getActor(pumpkinCake)
 
-	parents = Element(u'XMI')
-	outputXML(etFunc.prettify(makeClassDiagram(parents)))
+	for item in actorList:
+		print item
+#	for item in pumpkinCake:
+#		print item
 
-	
+#	soup = BeautifulSoup(pumpkinCake[0])
+#	print soup.find_all('chunk')[0].find_all('tok')[0].text
+#	print soup.find_all('chunk')[0].find_all('tok')[0].attrs['feature']
+
+# create XML
+#	parents = Element(u'XMI')
+#	outputXML(etFunc.prettify(makeClassDiagram(parents)))
+
+#class
+#	li = ["A","B","C","D"]
+#	tClass = cls.Character()
+
+#	for item in li:
+#		tClass.setAttribute(item)
+
+#	tClass.setAttribute("E")
+#	for items in tClass.getAttribute():
+#		print items
+
+#	print tClass.getAttributeItem(2)
