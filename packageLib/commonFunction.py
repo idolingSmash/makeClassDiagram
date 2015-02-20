@@ -111,3 +111,10 @@ def isHiragana(word):
 """
 def convertURLEncode(str):
 	return urllib2.quote(str.encode('utf-8'))
+
+"""
+	リスト一覧をコンソールに表示する
+"""
+def printListItem(Lists):
+	for item in Lists:
+		print item
