@@ -50,7 +50,7 @@ def makePumpkinCake(sentList):
 """
 	・助詞[は][が]を判定
 """
-def isWaGa(xmlStr):
+def isHaGa(xmlStr):
 	flag = False
 	tokenList = xmlStr.find_all('tok')
 	for tokenItem in tokenList:
@@ -67,7 +67,7 @@ def isWaGa(xmlStr):
 """
 	・助詞[は]を判定
 """
-def isWa(xmlStr):
+def isHa(xmlStr):
 	flag = False
 	tokenList = xmlStr.find_all('tok')
 	for tokenItem in tokenList:
@@ -190,7 +190,7 @@ def divideSimpleSentenceList(xmlStr):
 	pointList = divideSimpleSentenceCheckPoint(xmlStr) #分岐点を取得
 	chunkSrcList = xmlStr.xpath('//sentence/chunk')
 	for idx in pointList:
-		simpleSentenceList.append(chunkSrcList[prevIdx:idx])
+		simpleSentenceList.append(chunkSrcList[prevIdx:idx + 1])
 		prevIdx = idx
 	simpleSentenceList.append(chunkSrcList[prevIdx:])
 	return simpleSentenceList
@@ -207,10 +207,11 @@ def getCharacter(tokenList):
 		elif hinshiList[0] == u"名詞" and hinshiList[1] == u"固有名詞":
 			character = tokenItem.text
 	return character
+
 """
 	ハ格であるか？
 """
-def isWa(tokenList):
+def isHa(tokenList):
 	flag = False
 	for tokenItem in tokenList:
 		hinshiList = tokenItem.attrib['feature'].split(',')
@@ -221,17 +222,106 @@ def isWa(tokenList):
 """
 	ハ格を取得
 """
-def getWa(chunkList):
-	waWord = ""
+def getHa(chunkList):
+	haWord = ""
 	for chunkUnit in chunkList:
 		xmlTokenData = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
-		if isWa(xmlTokenData):
-			waWord = getCharacter(xmlTokenData)
-	return waWord
+		if isHa(xmlTokenData):
+			haWord = getCharacter(xmlTokenData)
+	return haWord
 
-#			elif hinshiList[0] == u"助詞" and hinshiList[1] == u"格助詞" and tokenItem.text == u"が":
-#				print u"が格あるで"
 
+"""
+	ハ格であるか？
+"""
+def isGa(tokenList):
+	flag = False
+	for tokenItem in tokenList:
+		hinshiList = tokenItem.attrib['feature'].split(',')
+		if hinshiList[0] == u"助詞" and hinshiList[1] == u"格助詞" and tokenItem.text == u"が":
+			flag = True
+	return flag
+
+"""
+	ハ格を取得
+"""
+def getGa(chunkList):
+	gaWord = ""
+	for chunkUnit in chunkList:
+		xmlTokenData = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
+		if isGa(xmlTokenData):
+			gaWord = getCharacter(xmlTokenData)
+	return gaWord
+
+"""
+	二格であるか？
+"""
+def isNi(tokenList):
+	flag = False
+	for tokenItem in tokenList:
+		hinshiList = tokenItem.attrib['feature'].split(',')
+		if hinshiList[0] == u"助詞" and hinshiList[1] == u"格助詞" and tokenItem.text == u"に":
+			flag = True
+	return flag
+
+"""
+	二格を取得
+"""
+def getNi(chunkList):
+	niWord = ""
+	for chunkUnit in chunkList:
+		xmlTokenData = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
+		if isNi(xmlTokenData):
+			niWord = getCharacter(xmlTokenData)
+	return niWord
+
+"""
+	ヲ格であるか？
+"""
+def isWo(tokenList):
+	flag = False
+	for tokenItem in tokenList:
+		hinshiList = tokenItem.attrib['feature'].split(',')
+		if hinshiList[0] == u"助詞" and hinshiList[1] == u"格助詞" and tokenItem.text == u"を":
+			flag = True
+	return flag
+
+"""
+	ヲ格を取得
+"""
+def getWo(chunkList):
+	woWord = ""
+	for chunkUnit in chunkList:
+		xmlTokenData = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
+		if isWo(xmlTokenData):
+			woWord = getCharacter(xmlTokenData)
+	return woWord
+
+"""
+	動詞はあるか？
+"""
+def isVerb(chunkList):
+	flag = False
+	for chunkUnit in chunkList:
+		tokenList = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
+		for tokenItem in tokenList:
+			hinshiList = tokenItem.attrib['feature'].split(',')
+			if hinshiList[0] == u"動詞" and hinshiList[1] == u"自立":
+				flag = True
+	return flag
+
+"""
+	動詞を取得
+"""
+def getVerb(chunkList):
+	verbWord = ""
+	for chunkUnit in chunkList:
+		tokenList = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
+		for tokenItem in tokenList:
+			hinshiList = tokenItem.attrib['feature'].split(',')
+			if hinshiList[0] == u"動詞" and hinshiList[1] == u"自立":
+				verbWord = tokenItem.text
+	return verbWord
 
 """
 	小説内の登場人物
@@ -245,7 +335,7 @@ def getActor(pumpList):
 		soup = BeautifulSoup(sentItem)
  		chunkList = soup.find_all('chunk')
  		for chunkItem in chunkList:
-			if isWaGa(chunkItem):
+			if isHaGa(chunkItem):
 				if isCharacter(chunkItem):
 					contents = __getCharacter(chunkItem)
 					if not contents in actorList:
@@ -253,36 +343,71 @@ def getActor(pumpList):
 	return actorList
 
 """
+	文章内照応解析用の辞書に保管
+"""
+def insertSRL(sentenceUnit):
+	dictElement = {}
+	dictElement[u"SubjectHa"] = getHa(sentenceUnit)
+	dictElement[u"SubjectGa"] = getGa(sentenceUnit)
+	dictElement[u"ObjectWo"] = getWo(sentenceUnit)
+	dictElement[u"ObjectNi"] = getNi(sentenceUnit)
+	return dictElement
+
+"""
+	文章内照応解析用の辞書から対象の主語を取得
+	優先順位　ハ格　＞　ガ格　＞　二格　＞　ヲ格
+"""
+def getSubjectFromSRL(dictElement):
+	subject = u""
+	if dictElement[u"SubjectHa"] != "":
+		subject = dictElement[u"SubjectHa"]
+	elif dictElement[u"SubjectHa"] == "" and dictElement[u"SubjectGa"] != "":
+		subject = dictElement[u"SubjectGa"]
+	elif dictElement[u"SubjectHa"] == "" and dictElement[u"SubjectGa"] == "" and\
+		dictElement[u"ObjectWo"] != "":
+		subject = dictElement[u"ObjectWo"]
+	else :
+		subject = dictElement[u"ObjectNi"]
+	return subject
+
+"""
+	SRLの更新
+	新しい要素がある場合はマージして置換する
+"""
+def mergeSRL(prevDict, nextDict):
+	if nextDict[u"SubjectHa"] != u"":
+		prevDict[u"SubjectHa"] = nextDict[u"SubjectHa"]
+	if nextDict[u"SubjectGa"] != u"":
+		prevDict[u"SubjectGa"] = nextDict[u"SubjectGa"]
+	if nextDict[u"ObjectNi"] != u"":
+		prevDict[u"ObjectNi"] = nextDict[u"ObjectNi"]
+	if nextDict[u"ObjectWo"] != u"":
+		prevDict[u"ObjectWo"] = nextDict[u"ObjectWo"]
+	return prevDict
+
+
+"""
 	省略された主語・目的語を補う
 """
 def supportNoun(pumpkinCake, sentenceList):
 	outputList = []
 	pointList = [] #単文の分割
+	iterVerbWord = ""
+	prevSRL = {}
+	nextSRL = {}
 	SRLInSentence = {u"SubjectHa":u"", u"SubjectGa":u"", u"ObjectNi":u"", u"ObjectWo":u""}
- 	for nimono in pumpkinCake:
+ 	for idx, nimono in enumerate(pumpkinCake):
 		parseXML = lxml.fromstring(nimono)
 		if parseXML.xpath('//sentence')[0].attrib['structure'] == u"stageDirections":
 			simpleSentenceList = divideSimpleSentenceList(parseXML)
-			for sentenceUnit in simpleSentenceList:
-				wa = getWa(sentenceUnit)
-				print wa
-#				for chunkUnit in sentenceUnit:
-#					xmlTokenData = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
-#					for tokenItem in xmlTokenData:
-#						hinshiList = tokenItem.attrib['feature'].split(',')
-#						if hinshiList[0] == u"助詞" and hinshiList[1] == u"係助詞" and tokenItem.text == u"は":
-#							print u"は格あるで"
-#						elif hinshiList[0] == u"助詞" and hinshiList[1] == u"格助詞" and tokenItem.text == u"が":
-#							print u"が格あるで"
-
-#			for chunkItem in parseXML.xpath('//sentence/chunk'):
-#				xmlTokenData = lxml.fromstring(lxml.tostring(chunkItem)).xpath('//chunk/tok')
-#				if i < pointList[0]:
-					
-#				else :
-#					pass
-
-#					print tokenItem.attrib['feature'] + u' ' + tokenItem.text
-#			SRL
+			for i,sentenceUnit in enumerate(simpleSentenceList):
+				nextSRL = insertSRL(sentenceUnit)
+				if i != 0 and isVerb(sentenceUnit):
+					if nextSRL[u"SubjectHa"] == u"" and nextSRL[u"SubjectGa"] == u"":
+						startIdx = sentenceList[idx].find(getVerb(sentenceUnit))
+						insertSubject = getSubjectFromSRL(prevSRL)
+						if insertSubject != u"":
+							print sentenceList[idx][:startIdx] + u"『" + insertSubject + u"は』" + sentenceList[idx][startIdx:]
+				prevSRL = mergeSRL(prevSRL,nextSRL)
 
 	return outputList
