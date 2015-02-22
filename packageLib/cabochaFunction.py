@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 import re
 import CaboCha
+import uuid
 from lxml import etree as lxml
 from bs4 import BeautifulSoup
+import packageLib.constClass as cls
 
 """
 	グローバル変数
@@ -388,26 +391,92 @@ def mergeSRL(prevDict, nextDict):
 
 """
 	省略された主語・目的語を補う
+	return 主語を補った文章
 """
 def supportNoun(pumpkinCake, sentenceList):
 	outputList = []
 	pointList = [] #単文の分割
 	iterVerbWord = ""
-	prevSRL = {}
+	prevSRL = {u"SubjectHa":u"", u"SubjectGa":u"", u"ObjectNi":u"", u"ObjectWo":u""}
 	nextSRL = {}
-	SRLInSentence = {u"SubjectHa":u"", u"SubjectGa":u"", u"ObjectNi":u"", u"ObjectWo":u""}
+	sentenceString = ""
  	for idx, nimono in enumerate(pumpkinCake):
+		sentenceString = sentenceList[idx]
+#		outputList.append(sentenceList[idx])
+		parseXML = lxml.fromstring(nimono)
+		if parseXML.xpath('//sentence')[0].attrib['structure'] == u"stageDirections":
+			simpleSentenceList = divideSimpleSentenceList(parseXML)
+			for sentenceUnit in simpleSentenceList:
+				nextSRL = insertSRL(sentenceUnit)
+				if isVerb(sentenceUnit):
+					if nextSRL[u"SubjectHa"] == u"" and nextSRL[u"SubjectGa"] == u"":
+						startIdx = sentenceString.find(getVerb(sentenceUnit))
+						insertSubject = getSubjectFromSRL(prevSRL)
+						if insertSubject != u"":
+#							sentenceString = sentenceString[:startIdx] + u"『" + insertSubject + u"は』" + sentenceString[startIdx:]
+							sentenceString = sentenceString[:startIdx] + insertSubject + u"は" + sentenceString[startIdx:]
+				prevSRL = mergeSRL(prevSRL,nextSRL)
+		outputList.append(sentenceString)
+	return outputList
+
+"""
+	単文から文の要素を抽出
+"""
+def extractSentenceElemetnt(chunkList):
+	dictElement = {}
+	for chunkUnit in chunkList:
+		tokenList = lxml.fromstring(lxml.tostring(chunkUnit)).xpath('//chunk/tok')
+		for tokenItem in tokenList:
+			hinshiList = tokenItem.attrib['feature'].split(',')
+			if hinshiList[0] == u"動詞" and hinshiList[1] == u"自立":
+				dictElement['operate'] = hinshiList[6]
+			elif hinshiList[0] == u"形容詞":
+				dictElement['attribute'] = hinshiList[6]
+			elif isGa(tokenList):
+				dictElement['subject'] = getGa(chunkList)
+			elif isHa(tokenList):
+				dictElement['subject'] = getHa(chunkList)			
+			elif isWo(tokenList):
+				dictElement['object'] = getWo(chunkList)
+	return dictElement
+
+
+"""
+	登場人物をクラスにパッケージする
+	クラス名　ー　文中の主語「ハ格」「ガ格」(Subject)
+	属性(attribute)　ー　文中の形容詞及び形容動詞(Adjective)
+	操作(operate)　ー　文中の動詞(Verb)
+	関連クラス(relate)　ー　文中の目的語「ヲ格」(Object)
+	return class Dictinary
+"""
+def makeCharacterPackage(pumpkinCake, sentenceList):
+	classDict = {}
+	classList = []
+	for idx, nimono in enumerate(pumpkinCake):
 		parseXML = lxml.fromstring(nimono)
 		if parseXML.xpath('//sentence')[0].attrib['structure'] == u"stageDirections":
 			simpleSentenceList = divideSimpleSentenceList(parseXML)
 			for i,sentenceUnit in enumerate(simpleSentenceList):
-				nextSRL = insertSRL(sentenceUnit)
-				if i != 0 and isVerb(sentenceUnit):
-					if nextSRL[u"SubjectHa"] == u"" and nextSRL[u"SubjectGa"] == u"":
-						startIdx = sentenceList[idx].find(getVerb(sentenceUnit))
-						insertSubject = getSubjectFromSRL(prevSRL)
-						if insertSubject != u"":
-							print sentenceList[idx][:startIdx] + u"『" + insertSubject + u"は』" + sentenceList[idx][startIdx:]
-				prevSRL = mergeSRL(prevSRL,nextSRL)
-
-	return outputList
+				sentenceDict = extractSentenceElemetnt(sentenceUnit)
+				if sentenceDict.has_key('subject'):
+					if sentenceDict['subject'] != "":
+						if classDict.has_key(sentenceDict['subject']):
+							if sentenceDict.has_key('attribute'):
+								if not sentenceDict['attribute'] in classDict[sentenceDict['subject']].getAttribute():
+									classDict[sentenceDict['subject']].setAttribute(sentenceDict['attribute'])
+							if sentenceDict.has_key('operate'):
+								if not sentenceDict['operate'] in classDict[sentenceDict['subject']].getOperate():
+									classDict[sentenceDict['subject']].setOperate(sentenceDict['operate'])
+							if sentenceDict.has_key('object') and sentenceDict.has_key('operate'):
+								classDict[sentenceDict['subject']].setRelateList(sentenceDict['operate'], sentenceDict['object'])
+						else:
+							actClass = cls.Character()
+							actClass.setClassName(sentenceDict['subject'])
+							if sentenceDict.has_key('attribute'):
+								actClass.setAttribute(sentenceDict['attribute'])
+							if sentenceDict.has_key('operate'):
+								actClass.setOperate(sentenceDict['operate'])
+							if sentenceDict.has_key('object') and sentenceDict.has_key('operate'):
+								actClass.setRelateList(sentenceDict['operate'], sentenceDict['object'])
+							classDict[sentenceDict['subject']] = actClass
+	return classDict

@@ -8,6 +8,16 @@ tagXmiHeader = [[u"XMI.exporter",u"Jomt XMI writer"],
 				[u"XMI.currentModelProducer",u"A.P"]
 				]
 
+attriXmiModel = [[u"xmi.id",u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37"],
+				[u"name",u"%E5%8D%83%E8%91%89%E7%9C%9F%E4%B8%80"],
+				[u"version",u"0"],
+				[u"unSolvedFlag",u"false"],
+				[u"isRoot",u"true"],
+				[u"isLeaf",u"false"],
+				[u"isAbstract",u"false"],
+				[u"xmlns:UML",u"org.omg.xmi.namespace.UML"]
+				]
+
 taggedValueModelElement=[
 	"1h,0,jude.profiles,%3C%3Fxml+version+%3D+%221.0%22+encoding+%3D+%22UTF-8%22+standalone+%3D+%22yes%22%3F%3E%0D%0A%3CumlProfiles%3E%0D%0A+%3CumlProfile%3E%0D%0A++%3Cname%3Ejude.profiles%3C%2Fname%3E%0D%0A+%3C%2FumlProfile%3E%0D%0A%3C%2FumlProfiles%3E%0D%0A%0D%0A",
 	"be,0,jude.usericons,%3C%3Fxml+version+%3D+%221.0%22+encoding+%3D+%22UTF-8%22+standalone+%3D+%22yes%22%3F%3E%0D%0A%3CmmUserIcon%3E%0D%0A+%3CmmUserIconInfo%3E%0D%0A++%3Cname%3Ejude.usericons%3C%2Fname%3E%0D%0A+%3C%2FmmUserIconInfo%3E%0D%0A%3C%2FmmUserIcon%3E%0D%0A%0D%0A",
