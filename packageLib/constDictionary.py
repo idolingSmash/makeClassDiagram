@@ -2,9 +2,22 @@
 # -*- coding: utf-8 -*-
 
 
-attriXmiVersion = {u"xmi.version":u"1.1",
-					u"xmlns:JUDE":u"http://objectclub.esm.co.jp/Jude/namespace/",
-					u"xmlns:UML":u"org.omg.xmi.namespace.UML"}
+#attriXmiVersion = {u"xmi.version":u"1.1",
+#					u"xmlns:JUDE":u"http://objectclub.esm.co.jp/Jude/namespace/",
+#					u"xmlns:UML":u"org.omg.xmi.namespace.UML"}
+
+attriXmiVersionTapple = ((u"xmi.version",u"1.1"),
+							(u"xmlns:JUDE",u"http://objectclub.esm.co.jp/Jude/namespace/"),
+							(u"xmlns:UML",u"org.omg.xmi.namespace.UML"))
+
+attriXmiModelTapple = ((u"xmi.id",u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37"),
+				(u"name",u"%E5%8D%83%E8%91%89%E7%9C%9F%E4%B8%80"),
+				(u"version",u"0"),
+				(u"unSolvedFlag",u"false"),
+				(u"isRoot",u"true"),
+				(u"isLeaf",u"false"),
+				(u"isAbstract",u"false"),
+				(u"xmlns:UML",u"org.omg.xmi.namespace.UML"))
 
 attriXmiModel = {u"xmi.id":u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37",
 				u"name":u"%E5%8D%83%E8%91%89%E7%9C%9F%E4%B8%80",
@@ -14,6 +27,38 @@ attriXmiModel = {u"xmi.id":u"r8-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff
 				u"isLeaf":u"false",
 				u"isAbstract":u"false",
 				u"xmlns:UML":u"org.omg.xmi.namespace.UML"}
+
+attriPartsClass = {u"version":u"0",
+					u"unSolvedFlag":u"false",
+					 u"isRoot":u"false",
+					  u"isLeaf":u"false",
+					   u"isAbstract":u"false",
+					    u"isActive":u"false"}
+
+attriAttributeInPartsClass = {u"version":u"0",
+								u"unSolvedFlag":u"false",
+								u"ownerScope":u"instance",
+								u"targetScope":u"instance",
+								u"changeability":u"changeable",
+								u"aggregation":u"composite"}
+
+structureIntType = {u"xmi.id":u"4a-i6gxnyvs-e5t1nl-1oxhro-2be0e3bced9dfcda4067457df1b3ff46",
+					u"name":u"int",
+					u"version":u"0",
+					u"unSolvedFlag":u"false",
+					u"isRoot":u"false", 
+					u"isLeaf":u"false",
+					u"isAbstract":u"false",
+					u"isActive":u"false"}
+
+structureVoidType = {u"xmi.id":u"20r-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37",
+					u"name":u"void",
+					u"version":u"0",
+					u"unSolvedFlag":u"false",
+					u"isRoot":u"false", 
+					u"isLeaf":u"false",
+					u"isAbstract":u"false",
+					u"isActive":u"false"}
 
 dialogAssociationPresentation={
 			u"version":u"0",

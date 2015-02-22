@@ -36,8 +36,9 @@ def makeHeader(ptree):
 		valTree = SubElement(docTree, lineItem[0])
 		valTree.text = lineItem[1]
 	verTree = SubElement(SubElement(docTree, u"XMI.sortedVersionHistories"), u"XMI.versionEntry")
-	verTree.set(u"productVersion", u"professional 6.7.0")
 	verTree.set(u"modelVersion",u"36")
+	verTree.set(u"productVersion", u"professional 6.7.0")
+
 	return parentsTree
 
 """
@@ -66,10 +67,59 @@ def makeTaggedValue(cdTree, splitList):
 		g2childTree.set(u"xmi.idref", dic.attriXmiModel[u"xmi.id"])
 
 """
-	body部-taggedValueを作成
+	body部-makeOwnedElement-Class部-Attributeを作成
+	uuidは class: + [クラス名] , attribute: + [属性名]　で生成
+"""
+def makeAttributeInPartsClass(cdTree, characterClass):
+	uuidFromName = uuid.uuid3(uuid.NAMESPACE_DNS,(u"class:" + characterClass[1].getClassName()).encode('utf-8'))
+	for attriItem in characterClass[1].getAttribute():
+		uuidFromAttribute = uuid.uuid3(uuid.NAMESPACE_DNS,(u"class:" + characterClass[1].getClassName() + u"," + u"attribute:" + attriItem).encode('utf-8'))
+		attributeTree = SubElement(cdTree, u"UML:Attribute")
+		attributeTree.set(u"xmi.id", str(uuidFromAttribute))
+		attributeTree.set(u"name", comm.convertURLEncode(attriItem))
+		for key,val in dic.attriAttributeInPartsClass.iteritems():
+			attributeTree.set(key,val)
+		attriModelNameSpace = SubElement(attributeTree, u"UML:ModelElement.namespace")
+		attriNameSpace = SubElement(attriModelNameSpace, u"UML:Namespace")
+		attriNameSpace.set(u"xmi.idref", str(uuidFromName))
+		attriVisibility = SubElement(attributeTree, u"UML:ModelElement.visibility")
+		attriVisibility.set(u"xmi.value", u"private")
+
+		attriFeature = SubElement(attributeTree, u"UML:Feature.owner")
+		attriClassifier = SubElement(attriFeature, u"UML:Classifier")
+		attriClassifier.set(u"xmi.idref", str(uuidFromName))
+		attriFVisibility = SubElement(attributeTree, u"UML:Feature.visibility")
+		attriFVisibility.set(u"xmi.value", u"private")
+
+		attriStructure = SubElement(attributeTree, u"UML:StructuralFeature.type")
+		attriSClassifier = SubElement(attriStructure, u"UML:Classifier")
+		attriSClassifier.set(u"xmi.idref", dic.structureIntType[u"xmi.id"])
+
+
+"""
+	body部-makeOwnedElement-Class部を作成
+	uuidは class: + [クラス名]　で生成
+"""
+def makePartsClass(cdTree, cList):
+	for classItem in cList.iteritems():
+		classChildTree = SubElement(cdTree, u"UML:Class")
+		uuidFromName = uuid.uuid3(uuid.NAMESPACE_DNS, (u"class:" + classItem[1].getClassName()).encode('utf-8'))
+		classChildTree.set(u"xmi.id", str(uuidFromName))
+		classChildTree.set(u"name", comm.convertURLEncode(classItem[1].getClassName()))
+		for key, val in dic.attriPartsClass.iteritems(): classChildTree.set(key, val)
+		classModelNameSpace = SubElement(classChildTree, u"UML:ModelElement.namespace")
+		classNameSpace = SubElement(classModelNameSpace, u"UML:Namespace")
+		classNameSpace.set(u"xmi.idref", dic.attriXmiModel[u"xmi.id"])
+		classVisibility = SubElement(classChildTree, u"UML:ModelElement.visibility")
+		classVisibility.set(u"xmi.value", u"public")
+		classFeature = SubElement(classChildTree, u"UML:Classifier.feature")
+		makeAttributeInPartsClass(classFeature, classItem)
+
+"""
+	body部-makeOwnedElementを作成
 """
 def makeOwnedElement(cdTree, cList):
-	classChildTree = SubElement(cdTree, u"UML:Class")
+	makePartsClass(cdTree, cList)
 
 
 """
@@ -81,8 +131,9 @@ def makeBodyProperty(cdTree, cList):
 	umlModel = SubElement(cdTree, u'UML:Model')
 	taggedValue = SubElement(umlModel, u"UML:ModelElement.taggedValue")
 	ownedElement = SubElement(umlModel, u"UML:Namespace.ownedElement")
-#	etFunc.setAttributeInTag(umlModel, dic.attriXmiModel)
-	for item in lis.attriXmiModel : umlModel.set(item[0],item[1])
+	OD = OrderedDict(dic.attriXmiModelTapple)
+	for item in OD:
+		umlModel.set(item, OD[item])
 	extensionProperty = SubElement(umlModel, u'XMI.extension')
 	customStyleMap = SubElement(extensionProperty, u'UML:Model.customStyleMap')
 	for key, val in dic.modelCustomStyleMap.iteritems():	
@@ -91,7 +142,7 @@ def makeBodyProperty(cdTree, cList):
 		childTree.set(u"value",val)
 	makeTaggedValue(taggedValue, lis.taggedValueModelElement)
 	makeOwnedElement(ownedElement, cList)
-		
+
 
 """
 	body部-Diagramを作成
@@ -105,6 +156,10 @@ def makeDiagram(cdTree, cList):
 def makeBody(cdTree, cList):
 	Body = SubElement(cdTree, u'XMI.content')
 	makeBodyProperty(Body, cList)
+	primitiveInt = SubElement(Body, u"UML:Primitive")
+	primitiveVoid = SubElement(Body, u"UML:Primitive")
+	for key, val in dic.structureIntType.iteritems(): primitiveInt.set(key, val)
+	for key, val in dic.structureVoidType.iteritems(): primitiveVoid.set(key, val)
 	makeDiagram(Body, cList)
 
 
@@ -113,21 +168,11 @@ def makeBody(cdTree, cList):
 """
 def makeClassDiagram(cList):
 	parents = Element(u'XMI')
-	attriXmiVersionTapple = ((u"xmi.version",u"1.1"),
-							(u"xmlns:JUDE",u"http://objectclub.esm.co.jp/Jude/namespace/"),
-							(u"xmlns:UML",u"org.omg.xmi.namespace.UML"))
-	dd = OrderedDict(attriXmiVersionTapple)
-	for item in dd:
-		parents.set(item, dd[item])
-
-#	NS = 'http://objectclub.esm.co.jp/Jude/namespace/'
-#	location_attribute = '{%s}noNameSpaceSchemaLocation' % NS
-#	NSMAP = { u"JUDE":u"http://objectclub.esm.co.jp/Jude/namespace/",
-#						u"UML":u"org.omg.xmi.namespace.UML"}
-#	parents = lxml.Element(u'XMI', OrderedDict([(u'xmi.version',u'1.1')]), nsmap = NSMAP )
-#	parents.set(nsmap = NSMAP)
+	OD = OrderedDict(dic.attriXmiVersionTapple)
+	for item in OD:
+		parents.set(item, OD[item])
 	makeHeader(parents)
-#	makeBody(cdTree, cList)	
+	makeBody(parents, cList)	
 	return parents
 
 """
@@ -155,8 +200,6 @@ def outputXML(cdTree):
 
 
 if __name__ == "__main__":
-#	print comm.convertURLEncode(u"千葉真一")
-	
 	paramPath = comm.getTextPathInCommandLine()
 	textList = [item.strip() for item in comm.getReadLineList(paramPath)]
 	title = textList[0]
