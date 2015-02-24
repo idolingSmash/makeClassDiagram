@@ -42,6 +42,27 @@ attriAttributeInPartsClass = {u"version":u"0",
 								u"changeability":u"changeable",
 								u"aggregation":u"composite"}
 
+attriOperateInPartsClass = {u"version":u"0",
+							 u"unSolvedFlag":u"false",
+							  u"ownerScope":u"instance",
+							   u"isQuery":u"true",
+							    u"concurrency":u"sequential",
+							     u"isRoot":u"false",
+							      u"isLeaf":u"false",
+							       u"isAbstract":u"false"
+							       }
+
+attriAssociationEnd = {u"version":u"0",
+						u"unSolvedFlag":u"false",
+						u"ownerScope":u"instance",
+						u"targetScope":u"instance",
+						u"changeability":u"changeable",
+						u"aggregation":u"none",
+						u"ordering":u"unordered",
+						u"navigableType":u"unspecified navigable", 
+						u"isNavigable":u"false"
+						}
+
 structureIntType = {u"xmi.id":u"4a-i6gxnyvs-e5t1nl-1oxhro-2be0e3bced9dfcda4067457df1b3ff46",
 					u"name":u"int",
 					u"version":u"0",
@@ -59,6 +80,26 @@ structureVoidType = {u"xmi.id":u"20r-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfa
 					u"isLeaf":u"false",
 					u"isAbstract":u"false",
 					u"isActive":u"false"}
+
+attriDiagramBase = {u"xmi.id":u"ss-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37",
+					u"typeInfo":u"Class Diagram",
+					u"version":u"0",
+					u"xmlns:JUDE":u"http://objectclub.esm.co.jp/Jude/namespace/"
+					}
+
+attriDiagramFramePresentation = {u"xmi.id":u"su-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37",
+									u"version":u"0",
+									u"depth":u"2147483646",
+									u"stereotypeVisibility":u"true",
+									u"constraintVisibility":u"true",
+									u"notationType":u"0",
+									u"doAutoResize":u"true",
+									u"visibility":u"false",
+									u"label":u"+"
+								}
+
+diagramSize = {u"width":u"1000.0", u"height":u"1000.0"}
+diagramLocationPoint = {u"pointX":u"10.0", u"pointY":u"10.0"}
 
 dialogAssociationPresentation={
 			u"version":u"0",
