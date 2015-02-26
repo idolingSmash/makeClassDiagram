@@ -440,6 +440,7 @@ def samplePrintCharacterList(cList):
 		print u"『操作』"
 		for item in ids[1].getOperate(): print item
 		print u"『関連』"
+	
 		for item in ids[1].getRelateList(): print item[0] + u"-" + item[1]
 		print u""
 
@@ -462,62 +463,6 @@ def addObjectSmallRole(cList):
 		cList[item] = actClass
 
 
-def displayNetwork(cList):
-	vector = {}
-	actor = []
-	edges = []
-#	persons = [u"田中", u"鈴木", u"山田", u"木村", u"吉岡"]
-#	persons = [u"Tanaka", u"SUzuki", u"Yamada", u"Kimura", u"Yoshioka"]
-	edge_labels = {}
-
-#	for person in persons:
-	    # defaultdict(list)ではなく、ノードを作成するためにこうする
-#	    vector[person] = []
-	for key, val in cList.iteritems():
-		actor.append(val.getClassName())
-		for relateItem in val.getRelateList():
-			edges.append((val.getClassName(), relateItem[1]))
-#	for man_pair in combinations(persons, 2):
-#	    man1, man2 = man_pair
-	    # 適当にエッジに値を付ける
-#	    r = randint(1, 10)
-#	    if r % 2:
-#	        continue
-#	    else:
-#	    vector[man1].append(man2)
-#	        edge_labels[(man1, man2)] = r
-
-#	graph = networkx.Graph(vector)  # 無向グラフ
-	graph = networkx.Graph()  # 無向グラフ
-	graph.add_nodes_from(actor)
-	graph.add_edges_from(edges)
-#	print vector
-
-#	for key, val in vector.iteritems():
-#		print key
-#		for vitem in val:
-#			print u"*" +vitem
-
-	# graph = network.DiGraph(vector)  # 有向グラフ (to_undirectedで無向グラフに変換可）
-	pylab.figure(figsize=(3, 4))  # 横3inch 縦4inchのサイズにする
-	pos = networkx.spring_layout(graph)  # いい感じにplotする
-#	pos = networkx.spectral_layout(graph)
-#	pos = networkx.random_layout(graph)  #とでもすれば高速にplot出来る
-
-
-	# 見た目をいじる
-	networkx.draw_networkx_nodes(graph, pos, node_size=100, node_color="w")
-	networkx.draw_networkx_edges(graph, pos, width=1)
-	networkx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_family=u'Hiragino Kaku Gothic ProN')
-	networkx.draw_networkx_labels(graph, pos, font_size=16, font_color="r", font_family=u'Hiragino Kaku Gothic ProN')
-
-	pylab.xticks([])
-	pylab.yticks([])
-
-	pylab.show()
-#	pylab.savefig("graph_networkx.png")
-
-
 if __name__ == "__main__":
 	paramPath = comm.getTextPathInCommandLine()
 	textList = [item.strip() for item in comm.getReadLineList(paramPath)]
@@ -530,7 +475,13 @@ if __name__ == "__main__":
 	characterList = pump.makeCharacterPackage(pumpkinCakeBySupportSubject, supportSentenceList) #classにパッケージ化
 	addObjectSmallRole(characterList)
 #	samplePrintCharacterList(characterList) #debug用
-	displayNetwork(characterList)
+#	barabasi.displayNetwork(characterList)
+	positionDic = barabasi.getNodePosition(characterList)
+	for key, val in positionDic.iteritems():
+		characterList[key].setPosition(val[0]*1000, val[1]*1000)
+
+#	for key, val in characterList.iteritems():
+#		print key + u":(" + str(val.getPosition()[0]) + u"," + str(val.getPosition()[1]) + u")"
 
 #	outputXML(makeClassDiagram(characterList, title))
 
