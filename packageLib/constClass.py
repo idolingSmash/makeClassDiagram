@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import random
 
 class Character:
 
@@ -9,6 +10,7 @@ class Character:
 		self.attributeList = []
 		self.operateList = []
 		self.relateList = []
+		self.position = [random.uniform(1, 1000), random.uniform(1, 1000)]
 
 	def setClassName(self, name):
 		self.className = name
@@ -22,6 +24,10 @@ class Character:
 	def setRelateList(self, obj, verb):
 		self.relateList.append([obj, verb])
 
+	def setPosition(self, positionX, positionY):
+		self.position[0] = positionX
+		self.position[1] = positionY
+
 	def getClassName(self):
 		return self.className
 
@@ -33,6 +39,9 @@ class Character:
 
 	def getRelateList(self):
 		return self.relateList
+
+	def getPosition(self):
+		return self.position
 
 	def getAttributeItem(self,index):
 		if index < len(self.attributeList):

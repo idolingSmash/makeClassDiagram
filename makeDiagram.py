@@ -7,6 +7,7 @@ import packageLib.constClass as cls
 import packageLib.commonFunction as comm
 import packageLib.elementTreeFunction as etFunc
 import packageLib.cabochaFunction as pump
+import packageLib.networkFunction as barabasi
 
 import os.path
 import re
@@ -20,6 +21,13 @@ from xml.dom import minidom
 from lxml import etree as lxml
 import lxml.builder as builder
 from bs4 import BeautifulSoup
+
+import networkx
+import pylab
+import matplotlib.font_manager
+from matplotlib import font_manager
+from itertools import combinations
+from random import randint
 
 xmlFilePath = u"test.xml"
 
@@ -255,7 +263,7 @@ def makeAssociation(cdTree, cList):
 """
 def makeOwnedElement(cdTree, cList):
 	makePartsClass(cdTree, cList)
-	makeSimplePartsClass(cdTree, cList)
+#	makeSimplePartsClass(cdTree, cList)
 	makeAssociation(cdTree, cList)
 
 """
@@ -304,6 +312,59 @@ def makeDiagramFramePresentation(cdTree):
 	childUPresentationTree.set(u"xmi.idref", dic.attriDiagramBase[u"xmi.id"])
 	makeDiagramLocationPoint(framePresentation,dic.diagramLocationPoint[u"pointX"], dic.diagramLocationPoint[u"pointY"])
 
+
+#            <JUDE:UPresentation.clients>
+#              <JUDE:AssociationPresentation xmi.idref="2gc-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37"/>
+#            </JUDE:UPresentation.clients>
+
+
+"""
+	body部-Diagram-JUDE:ClassifierPresentation-customStyleMapを作成
+"""
+def makeDiagramClassStyleMap(cdTree):
+	styleMap = SubElement(cdTree, u"JUDE:UPresentation.customStyleMap")
+	attrProperty = SubElement(styleMap, u"JUDE:UPresentation.styleProperty")
+	colorProperty = SubElement(styleMap, u"JUDE:UPresentation.styleProperty")
+	operProperty = SubElement(styleMap, u"JUDE:UPresentation.styleProperty")
+	attrProperty.set(u"key",u"attribute.filter_by_visibility")
+	attrProperty.set(u"value",u"")
+	colorProperty.set(u"key",u"fill.color")
+	colorProperty.set(u"value",u"#FFFFCC")
+	operProperty.set(u"key",u"operation.filter_by_visibility")
+	operProperty.set(u"value",u"")
+
+"""
+	body部-Diagram-JUDE:ClassifierPresentationを作成
+	uuid:diagramclass:[クラス名]
+"""
+def makeDiagramClassifierPresentation(cdTree, cList):
+	for item in cList.iteritems():
+		uuidDiagramClass = uuid.uuid3(uuid.NAMESPACE_DNS,  (u"diagramclass:"+ item[1].getClassName()) .encode('utf-8'))
+		uuidClass = uuid.uuid3(uuid.NAMESPACE_DNS,  (u"class:"+ item[1].getClassName()) .encode('utf-8'))
+		diagramClass = SubElement(cdTree, u"JUDE:ClassifierPresentation")
+		diagramClass.set(u"xmi.id", str(uuidDiagramClass))
+		for key, val in dic.dialogClassifierPresentation.iteritems():
+			diagramClass.set(key, val)
+		semanticModel = SubElement(diagramClass, u"JUDE:UPresentation.semanticModel")
+		childSemanticModel = SubElement(semanticModel, u"UML:Class")
+		childSemanticModel.set(u"xmi.idref", str(uuidClass))
+		UPresentation = SubElement(diagramClass, u"JUDE:UPresentation.diagram")
+		childUPresentation = SubElement(UPresentation, u"UML:Diagram")
+		childUPresentation.set(u"xmi.idref", dic.attriDiagramBase[u"xmi.id"])
+		makeDiagramClassStyleMap(diagramClass)
+		makeDiagramLocationPoint(diagramClass, str(item[1].getPosition()[0]), str(item[1].getPosition()[1]))
+
+"""
+	body部-Diagram-CustomStyleMapを作成
+"""
+def makeDiagramCustomStyleMap(cdTree):
+	customStyleMap = SubElement(cdTree, u"JUDE:Diagram.customStyleMap")
+	for key, val in dic.diagramCustomStyleMap.iteritems():
+		styleProperty = SubElement(customStyleMap, u"JUDE:Diagram.styleProperty")
+		styleProperty.set(u"key",key)
+		styleProperty.set(u"value",val)
+
+
 """
 	body部-Diagramを作成
 """
@@ -317,7 +378,8 @@ def makeDiagram(cdTree, cList, title):
 	childDiagramNamespace.set(u"xmi.idref", dic.attriXmiModel[u"xmi.id"])
 	diagramPresentations = SubElement(diagramTree, u"JUDE:Diagram.presentations")
 	makeDiagramFramePresentation(diagramPresentations)
-
+	makeDiagramClassifierPresentation(diagramPresentations, cList)
+	makeDiagramCustomStyleMap(diagramTree)
 
 """
 	body部を作成
@@ -381,6 +443,81 @@ def samplePrintCharacterList(cList):
 		for item in ids[1].getRelateList(): print item[0] + u"-" + item[1]
 		print u""
 
+"""
+	端役も追加
+"""
+def addObjectSmallRole(cList):
+	SubjectList = []
+	ObjectList = []
+	for ids in cList.iteritems():
+		SubjectList.append(ids[1].getClassName())
+	for ids in cList.iteritems():
+		for item in ids[1].getRelateList():
+			if not item[1] in SubjectList:
+				ObjectList.append(item[1]) 
+	ObjectList = list(set(ObjectList))
+	for item in ObjectList: 
+		actClass = cls.Character()
+		actClass.setClassName(item)
+		cList[item] = actClass
+
+
+def displayNetwork(cList):
+	vector = {}
+	actor = []
+	edges = []
+#	persons = [u"田中", u"鈴木", u"山田", u"木村", u"吉岡"]
+#	persons = [u"Tanaka", u"SUzuki", u"Yamada", u"Kimura", u"Yoshioka"]
+	edge_labels = {}
+
+#	for person in persons:
+	    # defaultdict(list)ではなく、ノードを作成するためにこうする
+#	    vector[person] = []
+	for key, val in cList.iteritems():
+		actor.append(val.getClassName())
+		for relateItem in val.getRelateList():
+			edges.append((val.getClassName(), relateItem[1]))
+#	for man_pair in combinations(persons, 2):
+#	    man1, man2 = man_pair
+	    # 適当にエッジに値を付ける
+#	    r = randint(1, 10)
+#	    if r % 2:
+#	        continue
+#	    else:
+#	    vector[man1].append(man2)
+#	        edge_labels[(man1, man2)] = r
+
+#	graph = networkx.Graph(vector)  # 無向グラフ
+	graph = networkx.Graph()  # 無向グラフ
+	graph.add_nodes_from(actor)
+	graph.add_edges_from(edges)
+#	print vector
+
+#	for key, val in vector.iteritems():
+#		print key
+#		for vitem in val:
+#			print u"*" +vitem
+
+	# graph = network.DiGraph(vector)  # 有向グラフ (to_undirectedで無向グラフに変換可）
+	pylab.figure(figsize=(3, 4))  # 横3inch 縦4inchのサイズにする
+	pos = networkx.spring_layout(graph)  # いい感じにplotする
+#	pos = networkx.spectral_layout(graph)
+#	pos = networkx.random_layout(graph)  #とでもすれば高速にplot出来る
+
+
+	# 見た目をいじる
+	networkx.draw_networkx_nodes(graph, pos, node_size=100, node_color="w")
+	networkx.draw_networkx_edges(graph, pos, width=1)
+	networkx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_family=u'Hiragino Kaku Gothic ProN')
+	networkx.draw_networkx_labels(graph, pos, font_size=16, font_color="r", font_family=u'Hiragino Kaku Gothic ProN')
+
+	pylab.xticks([])
+	pylab.yticks([])
+
+	pylab.show()
+#	pylab.savefig("graph_networkx.png")
+
+
 if __name__ == "__main__":
 	paramPath = comm.getTextPathInCommandLine()
 	textList = [item.strip() for item in comm.getReadLineList(paramPath)]
@@ -391,11 +528,12 @@ if __name__ == "__main__":
 	supportSentenceList = pump.supportNoun(pumpkinCake, sentenceList) #主語を補う
 	pumpkinCakeBySupportSubject = pump.makePumpkinCake(supportSentenceList) #cabocha処理(XML形式で出力)
 	characterList = pump.makeCharacterPackage(pumpkinCakeBySupportSubject, supportSentenceList) #classにパッケージ化
+	addObjectSmallRole(characterList)
 #	samplePrintCharacterList(characterList) #debug用
+	displayNetwork(characterList)
 
-	outputXML(makeClassDiagram(characterList, title))
+#	outputXML(makeClassDiagram(characterList, title))
 
 #getActor
 #	actorList = pump.getActor(pumpkinCake) #登場人物を抽出
 #	comm.printListItem(pumpkinCake)
-
