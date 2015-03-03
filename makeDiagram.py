@@ -288,6 +288,32 @@ def makeBodyProperty(cdTree, cList):
 	makeOwnedElement(ownedElement, cList)
 
 """
+	body部-Diagram-JUDE:UPresentation.clientsを作成
+	関連線の一覧
+	uuid 
+		associationpresentation:[subjectName]-[verb]-[objectName]
+"""
+def makeDiagramRelateClients(cdTree, cList, keyword):
+	clientsTree = SubElement(cdTree, u"JUDE:UPresentation.clients")
+	
+	#keywordが主語のとき
+	for key, val in cList.iteritems():
+		if val.getClassName() == keyword:
+			for item in val.getRelateList():
+				AssociationPresentation = SubElement(clientsTree, u"JUDE:AssociationPresentation")
+				uuidAP = uuid.uuid3(uuid.NAMESPACE_DNS, (u"associationpresentation:" + val.getClassName() + u"-" + item[0] + u"-" + item[1]).encode('utf-8'))
+				AssociationPresentation.set(u"xmi.idref", str(uuidAP))
+
+	#keywordが目的語のとき
+	for key, val in cList.iteritems():
+		for item in val.getRelateList():
+			if item[1] == keyword:
+				AssociationPresentation = SubElement(clientsTree, u"JUDE:AssociationPresentation")
+				uuidAP = uuid.uuid3(uuid.NAMESPACE_DNS, (u"associationpresentation:" + val.getClassName() + u"-" + item[0] + u"-" + item[1]).encode('utf-8'))
+				AssociationPresentation.set(u"xmi.idref", str(uuidAP))			
+
+
+"""
 	body部-Diagram-JUDE:FramePresentationを作成
 """
 def makeDiagramLocationPoint(cdTree, pointX, pointY):
@@ -313,11 +339,6 @@ def makeDiagramFramePresentation(cdTree):
 	makeDiagramLocationPoint(framePresentation,dic.diagramLocationPoint[u"pointX"], dic.diagramLocationPoint[u"pointY"])
 
 
-#            <JUDE:UPresentation.clients>
-#              <JUDE:AssociationPresentation xmi.idref="2gc-i5szgvt3--uhbc9-1oxhro-8c73bb2e5a3c31e42cfaa13ff14e2c37"/>
-#            </JUDE:UPresentation.clients>
-
-
 """
 	body部-Diagram-JUDE:ClassifierPresentation-customStyleMapを作成
 """
@@ -339,21 +360,65 @@ def makeDiagramClassStyleMap(cdTree):
 """
 def makeDiagramClassifierPresentation(cdTree, cList):
 	for item in cList.iteritems():
-		uuidDiagramClass = uuid.uuid3(uuid.NAMESPACE_DNS,  (u"diagramclass:"+ item[1].getClassName()) .encode('utf-8'))
+		uuidDiagramClass = uuid.uuid3(uuid.NAMESPACE_DNS, (u"diagramclass:"+ item[1].getClassName()).encode('utf-8'))
 		uuidClass = uuid.uuid3(uuid.NAMESPACE_DNS,  (u"class:"+ item[1].getClassName()) .encode('utf-8'))
 		diagramClass = SubElement(cdTree, u"JUDE:ClassifierPresentation")
 		diagramClass.set(u"xmi.id", str(uuidDiagramClass))
 		for key, val in dic.dialogClassifierPresentation.iteritems():
 			diagramClass.set(key, val)
+		diagramClass.set(u"width", str(50.0))
+		diagramClass.set(u"height", str(75.0))
 		semanticModel = SubElement(diagramClass, u"JUDE:UPresentation.semanticModel")
 		childSemanticModel = SubElement(semanticModel, u"UML:Class")
 		childSemanticModel.set(u"xmi.idref", str(uuidClass))
 		UPresentation = SubElement(diagramClass, u"JUDE:UPresentation.diagram")
 		childUPresentation = SubElement(UPresentation, u"UML:Diagram")
 		childUPresentation.set(u"xmi.idref", dic.attriDiagramBase[u"xmi.id"])
+#		makeDiagramRelateClients(diagramClass, cList, item[1].getClassName())
 		makeDiagramClassStyleMap(diagramClass)
 		makeDiagramLocationPoint(diagramClass, str(item[1].getPosition()[0]), str(item[1].getPosition()[1]))
 
+
+"""
+	body部-Diagram-JUDE:AssociationPresentationを作成
+	uuid:
+	associationpresentation		associationpresentation:[subjectName]-[verb]-[objectName]
+	association					assosiation:[subjectName]-[verb]-[objectName]
+	主語を走査
+
+"""
+def makeDiagramAssociationPresentation(cdTree, cList):
+	for key, val in cList.iteritems():
+		if 0 < len(val.getRelateList()):
+			for item in val.getRelateList():
+				dialogAssociationPresentation = SubElement(cdTree, u"JUDE:AssociationPresentation")
+				uuidAP = uuid.uuid3(uuid.NAMESPACE_DNS, (u"associationpresentation:" + val.getClassName() + u"-" + item[0] + u"-" + item[1]).encode('utf-8'))
+				dialogAssociationPresentation.set(u"xmi.id", str(uuidAP))
+				for dkey, dval in doc.dialogAssociationPresentation.iteritems():
+					dialogAssociationPresentation.set(dkey, dval)
+				semanticModel = SubElement(dialogAssociationPresentation, u"JUDE:UPresentation.semanticModel")
+				childSemanticModel = SubElement(semanticModel, u"UML:Association")
+				uuidAss = uuid.uuid3(uuid.NAMESPACE_DNS, (u"association:" + val.getClassName() + u"-" + item[0] + u"-" + item[1]).encode('utf-8'))
+				childSemanticModel.set(u"xmi.idref", str(uuidAss))
+				diagramBase = SubElement(dialogAssociationPresentation, u"JUDE:UPresentation.diagram")
+				childDiagramBase = SubElement(diagramBase, u"JUDE:Diagram")
+				childDiagramBase.set(u"xmi.idref", dic.attriDiagramBase[u"xmi.id"])
+
+				classPoint = SubElement(dialogAssociationPresentation, u"JUDE:UPresentation.servers")
+				uuidCS = uuid.uuid3(uuid.NAMESPACE_DNS, u"diagramclass:" + val.getClassName())
+				childClassPointSubject = SubElement(classPoint, u"JUDE:ClassifierPresentation")
+				childClassPointSubject.set(u"xmi.idref", str(uuidCS))
+
+				uuidCO = uuid.uuid3(uuid.NAMESPACE_DNS, u"diagramclass:" + item[1])
+				childClassPointObject = SubElement(classPoint, u"JUDE:ClassifierPresentation")
+				childClassPointObject.set(u"xmi.idref", str(uuidCO))
+
+				customStyleMap = SubElement(dialogAssociationPresentation, u"JUDE:UPresentation.customStyleMap")
+				childCustomStyleMap = SubElement(customStyleMap, u"JUDE:UPresentation.styleProperty")
+				childCustomStyleMap.set(u"key",u"line.shape")
+				childCustomStyleMap.set(u"value",u"line")
+
+				
 """
 	body部-Diagram-CustomStyleMapを作成
 """
@@ -379,6 +444,7 @@ def makeDiagram(cdTree, cList, title):
 	diagramPresentations = SubElement(diagramTree, u"JUDE:Diagram.presentations")
 	makeDiagramFramePresentation(diagramPresentations)
 	makeDiagramClassifierPresentation(diagramPresentations, cList)
+#	makeDiagramAssociationPresentation(diagramPresentations, cList)
 	makeDiagramCustomStyleMap(diagramTree)
 
 """
@@ -475,15 +541,16 @@ if __name__ == "__main__":
 	characterList = pump.makeCharacterPackage(pumpkinCakeBySupportSubject, supportSentenceList) #classにパッケージ化
 	addObjectSmallRole(characterList)
 #	samplePrintCharacterList(characterList) #debug用
-#	barabasi.displayNetwork(characterList)
+#	barabasi.displayNetwork(characterList)  #ネットワーク表示用
+
 	positionDic = barabasi.getNodePosition(characterList)
 	for key, val in positionDic.iteritems():
 		characterList[key].setPosition(val[0]*1000, val[1]*1000)
 
+	outputXML(makeClassDiagram(characterList, title))
+
 #	for key, val in characterList.iteritems():
 #		print key + u":(" + str(val.getPosition()[0]) + u"," + str(val.getPosition()[1]) + u")"
-
-#	outputXML(makeClassDiagram(characterList, title))
 
 #getActor
 #	actorList = pump.getActor(pumpkinCake) #登場人物を抽出
