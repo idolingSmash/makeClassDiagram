@@ -175,29 +175,6 @@ def makePartsClass(cdTree, cList):
 		makeAttributeInPartsClass(classFeature, classItem)
 		makeOperateInPartsClass(classFeature, classItem)
 
-"""
-	body部-makeOwnedElement-Class部を作成
-	uuidは class: + [クラス名]　で生成
-	属性と操作なし
-"""
-def makeSimplePartsClass(cdTree, cList):
-	SubjectList = []
-	ObjectList = []
-	for ids in cList.iteritems():
-		SubjectList.append(ids[1].getClassName())
-	for ids in cList.iteritems():
-		for item in ids[1].getRelateList():
-			if not item[1] in SubjectList:
-				ObjectList.append(item[1]) 
-	ObjectList = list(set(ObjectList))
-	for oitem in ObjectList:
-		classChildTree = SubElement(cdTree, u"UML:Class")
-		uuidFromName = uuid.uuid3(uuid.NAMESPACE_DNS, (u"class:" + oitem).encode('utf-8'))
-		classChildTree.set(u"xmi.id", str(uuidFromName))
-		classChildTree.set(u"name", comm.convertURLEncode(oitem))
-		for key, val in dic.attriPartsClass.iteritems(): classChildTree.set(key, val)
-		makeModelElementNameSpace(classChildTree, dic.attriXmiModel[u"xmi.id"], u"public")
-		classFeature = SubElement(classChildTree, u"UML:Classifier.feature")
 
 """
 	body部-AssociationEndを作成
@@ -206,31 +183,31 @@ def makeSimplePartsClass(cdTree, cList):
 def makeAssociationEnd(cdTree, fromClass, toClass, UUIDEND, UUIDASS):
 	uuidFromClass = uuid.uuid3(uuid.NAMESPACE_DNS, (u"class:" + fromClass).encode('utf-8'))
 	uuidToClass = uuid.uuid3(uuid.NAMESPACE_DNS, (u"class:" + toClass).encode('utf-8'))
-	assosiationEndTree = SubElement(cdTree, u"UML:AssociationEnd")
-	assosiationEndTree.set(u"xmi.id", UUIDEND)
-	assosiationEndTree.set(u"name", u"")
-	for key, val in dic.attriAssociationEnd.iteritems(): assosiationEndTree.set(key, val)
-	makeModelElementNameSpace(assosiationEndTree, dic.attriXmiModel[u"xmi.id"], u"private")
-	featureOwnerTree = SubElement(assosiationEndTree, u"UML:Feature.owner")
+	associationEndTree = SubElement(cdTree, u"UML:AssociationEnd")
+	associationEndTree.set(u"xmi.id", UUIDEND)
+	associationEndTree.set(u"name", u"")
+	for key, val in dic.attriAssociationEnd.iteritems(): associationEndTree.set(key, val)
+	makeModelElementNameSpace(associationEndTree, dic.attriXmiModel[u"xmi.id"], u"private")
+	featureOwnerTree = SubElement(associationEndTree, u"UML:Feature.owner")
 	childFeatureOwnerTree = SubElement(featureOwnerTree, u"UML:Classifier")
 	childFeatureOwnerTree.set(u"xmi.idref", str(uuidToClass))
-	featureVisibility = SubElement(assosiationEndTree, u"UML:Feature.visibility")
+	featureVisibility = SubElement(associationEndTree, u"UML:Feature.visibility")
 	featureVisibility.set(u"xmi.value", u"private")
-	participantTree = SubElement(assosiationEndTree, u"UML:AssociationEnd.participant")
+	participantTree = SubElement(associationEndTree, u"UML:AssociationEnd.participant")
 	childParticipantTree = SubElement(participantTree, u"UML:Classifier")
 	childParticipantTree.set(u"xmi.idref", str(uuidFromClass))
-	assosiationStemTree = SubElement(assosiationEndTree, u"UML:AssociationEnd.association")
-	childAssosiationStemTree = SubElement(assosiationStemTree, u"UML:Association")
-	childAssosiationStemTree.set(u"xmi.idref", UUIDASS)
-	assosiationStemVisibility = SubElement(assosiationEndTree, u"UML:AssociationEnd.visibility")
-	assosiationStemVisibility.set(u"xmi.value", u"private")
+	associationStemTree = SubElement(associationEndTree, u"UML:AssociationEnd.association")
+	childassociationStemTree = SubElement(associationStemTree, u"UML:Association")
+	childassociationStemTree.set(u"xmi.idref", UUIDASS)
+	associationStemVisibility = SubElement(associationEndTree, u"UML:AssociationEnd.visibility")
+	associationStemVisibility.set(u"xmi.value", u"private")
 
 """
 	body部-Associationを作成
 	uuid 
-		association			assosiation:[subjectName]-[verb]-[objectName]
-		associationEndA		assosiationEnd:[subjectName]-[objectName]-[verb]
-		associationEndB		assosiationEnd:[objectName]-[subjectName]-[verb]
+		association			association:[subjectName]-[verb]-[objectName]
+		associationEndA		associationEnd:[subjectName]-[objectName]-[verb]
+		associationEndB		associationEnd:[objectName]-[subjectName]-[verb]
 """
 def makeAssociation(cdTree, cList):
 	for classItem in cList.iteritems():
@@ -238,9 +215,9 @@ def makeAssociation(cdTree, cList):
 			subjectName = classItem[1].getClassName()
 			verbName = comm.convertURLEncode(linkItem[0])
 			objectName = linkItem[1]
-			seedAssociation = u"assosiation:" + subjectName + u"-" + linkItem[0] + u"-" + objectName
-			seedAssociationEndA = u"assosiationEnd:" + subjectName + u"-" + objectName + u"-" + linkItem[0]
-			seedAssociationEndB = u"assosiationEnd:" + objectName + u"-" + subjectName + u"-" + linkItem[0]
+			seedAssociation = u"association:" + subjectName + u"-" + linkItem[0] + u"-" + objectName
+			seedAssociationEndA = u"associationEnd:" + subjectName + u"-" + objectName + u"-" + linkItem[0]
+			seedAssociationEndB = u"associationEnd:" + objectName + u"-" + subjectName + u"-" + linkItem[0]
 			uuidAssociation = uuid.uuid3(uuid.NAMESPACE_DNS, seedAssociation.encode('utf-8'))
 			uuidAssociationEndA = uuid.uuid3(uuid.NAMESPACE_DNS, seedAssociationEndA.encode('utf-8'))
 			uuidAssociationEndB = uuid.uuid3(uuid.NAMESPACE_DNS, seedAssociationEndB.encode('utf-8'))
@@ -253,17 +230,16 @@ def makeAssociation(cdTree, cList):
 			associationConnectionTree = SubElement(associationTree , u"UML:Association.connection")
 			makeAssociationEnd(associationConnectionTree, subjectName, objectName, str(uuidAssociationEndA), str(uuidAssociation))
 			makeAssociationEnd(associationConnectionTree, objectName, subjectName, str(uuidAssociationEndB), str(uuidAssociation))
-			assosiationEndA = SubElement(cdTree, u"UML:AssociationEnd")
-			assosiationEndB = SubElement(cdTree, u"UML:AssociationEnd")
-			assosiationEndA.set(u"xmi.idref", str(uuidAssociationEndA))
-			assosiationEndB.set(u"xmi.idref", str(uuidAssociationEndB))
+			associationEndA = SubElement(cdTree, u"UML:AssociationEnd")
+			associationEndB = SubElement(cdTree, u"UML:AssociationEnd")
+			associationEndA.set(u"xmi.idref", str(uuidAssociationEndA))
+			associationEndB.set(u"xmi.idref", str(uuidAssociationEndB))
 
 """
 	body部-makeOwnedElementを作成
 """
 def makeOwnedElement(cdTree, cList):
 	makePartsClass(cdTree, cList)
-#	makeSimplePartsClass(cdTree, cList)
 	makeAssociation(cdTree, cList)
 
 """
@@ -314,10 +290,31 @@ def makeDiagramRelateClients(cdTree, cList, keyword):
 
 
 """
-	body部-Diagram-JUDE:FramePresentationを作成
+	body部-Diagram-LocationPointを作成
 """
 def makeDiagramLocationPoint(cdTree, pointX, pointY):
 	JomtPresentation = SubElement(cdTree, u"JUDE:JomtPresentation.location")
+	locationX = SubElement(JomtPresentation, u"XMI.field")
+	locationY = SubElement(JomtPresentation, u"XMI.field")
+	locationX.text = pointX
+	locationY.text = pointY
+
+"""
+	body部-Diagram-関連点(sourceEnd)を作成
+"""
+def makeDiagramRelateSourceEnd(cdTree, pointX, pointY):
+	JomtPresentation = SubElement(cdTree, u"JUDE:BinaryRelationPresentation.sourceEnd")
+	locationX = SubElement(JomtPresentation, u"XMI.field")
+	locationY = SubElement(JomtPresentation, u"XMI.field")
+	locationX.text = pointX
+	locationY.text = pointY
+
+
+"""
+	body部-Diagram-関連点(targetEnd)を作成
+"""
+def makeDiagramRelateTargetEnd(cdTree, pointX, pointY):
+	JomtPresentation = SubElement(cdTree, u"JUDE:BinaryRelationPresentation.targetEnd")
 	locationX = SubElement(JomtPresentation, u"XMI.field")
 	locationY = SubElement(JomtPresentation, u"XMI.field")
 	locationX.text = pointX
@@ -355,6 +352,43 @@ def makeDiagramClassStyleMap(cdTree):
 	operProperty.set(u"value",u"")
 
 """
+	クラス図に表示するクラスのサイズを設定
+"""
+def setDialogClassSize(cdTree, classData):
+	nameLength = len(classData.getClassName())
+	attributeMaxLength = 0
+	operationMaxLength = 0
+	
+	maxName = 0
+	maxAttribute = 0
+	maxOperate = 0
+
+	width = 0
+	height = 0
+
+	if 0 < len(classData.getAttribute()):
+		for attritem in classData.getAttribute():
+			if attributeMaxLength < len(attritem):
+				attributeMaxLength = len(attritem)
+
+	if 0 < len(classData.getOperate()):
+		for opeitem in classData.getOperate():
+			if operationMaxLength < len(opeitem):
+				operationMaxLength = len(opeitem)
+
+	if nameLength < 2: maxName = 40
+	else : maxName = 46 + 13 * (nameLength - 2)
+	
+	maxAttribute = 79 + 12 * (attributeMaxLength - 1);
+	maxOperate = 81 + 12 * (operationMaxLength - 1);
+	
+	width = max([maxName, maxAttribute, maxOperate])
+	height = 42.09375 + 15.09375 * (len(classData.getAttribute()) + len(classData.getOperate()))
+
+	cdTree.set(u"width", str(width))
+	cdTree.set(u"height", str(height))
+
+"""
 	body部-Diagram-JUDE:ClassifierPresentationを作成
 	uuid:diagramclass:[クラス名]
 """
@@ -366,15 +400,14 @@ def makeDiagramClassifierPresentation(cdTree, cList):
 		diagramClass.set(u"xmi.id", str(uuidDiagramClass))
 		for key, val in dic.dialogClassifierPresentation.iteritems():
 			diagramClass.set(key, val)
-		diagramClass.set(u"width", str(50.0))
-		diagramClass.set(u"height", str(75.0))
+		setDialogClassSize(diagramClass, item[1])
 		semanticModel = SubElement(diagramClass, u"JUDE:UPresentation.semanticModel")
 		childSemanticModel = SubElement(semanticModel, u"UML:Class")
 		childSemanticModel.set(u"xmi.idref", str(uuidClass))
 		UPresentation = SubElement(diagramClass, u"JUDE:UPresentation.diagram")
 		childUPresentation = SubElement(UPresentation, u"UML:Diagram")
 		childUPresentation.set(u"xmi.idref", dic.attriDiagramBase[u"xmi.id"])
-#		makeDiagramRelateClients(diagramClass, cList, item[1].getClassName())
+		makeDiagramRelateClients(diagramClass, cList, item[1].getClassName())
 		makeDiagramClassStyleMap(diagramClass)
 		makeDiagramLocationPoint(diagramClass, str(item[1].getPosition()[0]), str(item[1].getPosition()[1]))
 
@@ -383,7 +416,7 @@ def makeDiagramClassifierPresentation(cdTree, cList):
 	body部-Diagram-JUDE:AssociationPresentationを作成
 	uuid:
 	associationpresentation		associationpresentation:[subjectName]-[verb]-[objectName]
-	association					assosiation:[subjectName]-[verb]-[objectName]
+	association					association:[subjectName]-[verb]-[objectName]
 	主語を走査
 
 """
@@ -394,7 +427,7 @@ def makeDiagramAssociationPresentation(cdTree, cList):
 				dialogAssociationPresentation = SubElement(cdTree, u"JUDE:AssociationPresentation")
 				uuidAP = uuid.uuid3(uuid.NAMESPACE_DNS, (u"associationpresentation:" + val.getClassName() + u"-" + item[0] + u"-" + item[1]).encode('utf-8'))
 				dialogAssociationPresentation.set(u"xmi.id", str(uuidAP))
-				for dkey, dval in doc.dialogAssociationPresentation.iteritems():
+				for dkey, dval in dic.dialogAssociationPresentation.iteritems():
 					dialogAssociationPresentation.set(dkey, dval)
 				semanticModel = SubElement(dialogAssociationPresentation, u"JUDE:UPresentation.semanticModel")
 				childSemanticModel = SubElement(semanticModel, u"UML:Association")
@@ -405,11 +438,11 @@ def makeDiagramAssociationPresentation(cdTree, cList):
 				childDiagramBase.set(u"xmi.idref", dic.attriDiagramBase[u"xmi.id"])
 
 				classPoint = SubElement(dialogAssociationPresentation, u"JUDE:UPresentation.servers")
-				uuidCS = uuid.uuid3(uuid.NAMESPACE_DNS, u"diagramclass:" + val.getClassName())
+				uuidCS = uuid.uuid3(uuid.NAMESPACE_DNS, (u"diagramclass:" + val.getClassName()).encode('utf-8'))
 				childClassPointSubject = SubElement(classPoint, u"JUDE:ClassifierPresentation")
 				childClassPointSubject.set(u"xmi.idref", str(uuidCS))
 
-				uuidCO = uuid.uuid3(uuid.NAMESPACE_DNS, u"diagramclass:" + item[1])
+				uuidCO = uuid.uuid3(uuid.NAMESPACE_DNS, (u"diagramclass:" + item[1]).encode('utf-8'))
 				childClassPointObject = SubElement(classPoint, u"JUDE:ClassifierPresentation")
 				childClassPointObject.set(u"xmi.idref", str(uuidCO))
 
@@ -418,7 +451,13 @@ def makeDiagramAssociationPresentation(cdTree, cList):
 				childCustomStyleMap.set(u"key",u"line.shape")
 				childCustomStyleMap.set(u"value",u"line")
 
-				
+				makeDiagramLocationPoint(dialogAssociationPresentation, str(0.0), str(0.0))
+				makeDiagramRelateSourceEnd(dialogAssociationPresentation, str(0.5), str(0.5))
+				makeDiagramRelateTargetEnd(dialogAssociationPresentation, str(0.5), str(0.5))
+				snakePath = SubElement(dialogAssociationPresentation, u"JUDE:PathPresentation.points")
+#				terminalPartsA = SubElement(dialogAssociationPresentation, u"qualifierBoxAPresentation")
+#				terminalPartsB = SubElement(dialogAssociationPresentation, u"qualifierBoxAPresentation")
+
 """
 	body部-Diagram-CustomStyleMapを作成
 """
@@ -444,7 +483,7 @@ def makeDiagram(cdTree, cList, title):
 	diagramPresentations = SubElement(diagramTree, u"JUDE:Diagram.presentations")
 	makeDiagramFramePresentation(diagramPresentations)
 	makeDiagramClassifierPresentation(diagramPresentations, cList)
-#	makeDiagramAssociationPresentation(diagramPresentations, cList)
+	makeDiagramAssociationPresentation(diagramPresentations, cList)
 	makeDiagramCustomStyleMap(diagramTree)
 
 """
@@ -549,9 +588,4 @@ if __name__ == "__main__":
 
 	outputXML(makeClassDiagram(characterList, title))
 
-#	for key, val in characterList.iteritems():
-#		print key + u":(" + str(val.getPosition()[0]) + u"," + str(val.getPosition()[1]) + u")"
 
-#getActor
-#	actorList = pump.getActor(pumpkinCake) #登場人物を抽出
-#	comm.printListItem(pumpkinCake)
